@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no,email=no" />
+		<title>我的帐单</title>
+		<link rel="stylesheet" type="text/css" href="css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+
+		<style type="text/css">
+		
+		.transparent-bg{
+			background: #ff176b;
+			
+		}
+		.transparent-bg a{
+			color: #fff;
+		}
+			.box-a{
+				height: 45px;
+				background: #dcdcdc;
+				line-height: 45px;
+			}
+			.box-a img{
+				width: 30px;
+				height: 30px;
+				margin-top: 8px;
+				margin-left: 10px;
+			}
+			.box-a span{
+				position: absolute;
+				line-height: 50px;
+				margin-left: 5px;
+			}
+			.box-b{
+				height: 45px;
+				background: #fff;
+				line-height: 45px;
+			}
+		
+		</style>
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-navs transparent-bg">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-title">我的帐单</a>
+		</header>
+		<div id="" class="scroll-div">
+			<div class="mui-content-list">
+				<div class="boob">
+					<div class="box-a">
+						<img src="images/img-fh.PNG"/>
+						<span>分红</span>
+						<a id="fhmx" style="float: right;color: red;margin-right: 10px;">查看明细</a>
+					</div>
+					<div class="box-b">
+						<span style="margin-left: 10px;">累计收益:98</span>
+						<span style="float: right; margin-right: 10px;">今日收益:98</span>
+					</div>
+				</div>
+				<div class="boob">
+					<div class="box-a">
+						<img src="images/img-gg.PNG"/>
+						<span>干股</span>
+						<a id="ggmx" style="float: right;color: red;margin-right: 10px;">查看明细</a>
+					</div>
+					<div class="box-b">
+						<span style="margin-left: 10px;">累计收益:98</span>
+						<span style="float: right; margin-right: 10px;">今日收益:98</span>
+						
+					</div>
+				</div>
+				<div class="boob">
+					<div class="box-a">
+						<img src="images/img-jf.PNG"/>
+						<span>积分</span>
+						<a id="jfmx" style="float: right;color: red;margin-right: 10px;">查看明细</a>
+					</div>
+					<div class="box-b">
+						<span style="margin-left: 10px;">累计收益:98</span>
+						<span style="float: right; margin-right: 10px;">今日收益:98</span>
+						
+					</div>
+				</div>
+				<div class="boob">
+					<div class="box-a">
+						<img src="images/img-tjj.PNG"/>
+						<span>推荐奖</span>
+						<a id="tjmx" style="float: right;color: red;margin-right: 10px;">查看明细</a>
+					</div>
+					<div class="box-b">
+						<span style="margin-left: 10px;">累计收益:98</span>
+						<span style="float: right; margin-right: 10px;">今日收益:98</span>
+						
+					</div>
+				</div>
+				<div class="boob">
+					<div class="box-a">
+						<img src="images/img-hhrj.PNG"/>
+						<span>合伙人奖</span>
+						<a id="hhrj" style="float: right;color: red;margin-right: 10px;">查看明细</a>
+					</div>
+					<div class="box-b">
+						<span style="margin-left: 10px;">累计收益:98</span>
+						<span style="float: right; margin-right: 10px;">今日收益:98</span>
+						
+					</div>
+				</div>
+				<div class="boob">
+					<div class="box-a">
+						<img src="images/hhrblj.PNG"/>
+						<span>合伙人伯乐奖</span>
+						<a id="hhrblj" style="float: right;color: red;margin-right: 10px;">查看明细</a>
+					</div>
+					<div class="box-b">
+						<span style="margin-left: 10px;">累计收益:98</span>
+						<span style="float: right; margin-right: 10px;">今日收益:98</span>	
+					</div>
+				</div>
+				<div class="boob">
+					<div class="box-a">
+						<img src="images/img-hhrglj.PNG"/>
+						<span>合伙人管理奖</span>
+						<a id="hhrglj" style="float: right;color: red;margin-right: 10px;">查看明细</a>
+					</div>
+					<div class="box-b">
+						<span style="margin-left: 10px;">累计收益:98</span>
+						<span style="float: right; margin-right: 10px;">今日收益:98</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/app.js"></script>
+		<script>
+			mui.init();
+			
+			document.getElementById('fhmx').addEventListener('tap',function(){
+				himall.openVW('user/bill/participation.html');
+				
+			})
+			document.getElementById('ggmx').addEventListener('tap',function(){
+				himall.openVW('user/bill/performance.html');
+				
+			})
+			document.getElementById('jfmx').addEventListener('tap',function(){
+				himall.openVW('user/bill/integral.html');
+				
+			})
+			document.getElementById('tjmx').addEventListener('tap',function(){
+				himall.openVW('user/bill/Referral.html');
+				
+			})
+			document.getElementById('hhrj').addEventListener('tap',function(){
+				himall.openVW('user/bill/partner.html');
+				
+			})
+			document.getElementById('hhrblj').addEventListener('tap',function(){
+				himall.openVW('user/bill/partner.html');
+				
+			})
+			document.getElementById('hhrblj').addEventListener('tap',function(){
+				himall.openVW('user/bill/talent.html');
+				
+			})
+			document.getElementById('hhrglj').addEventListener('tap',function(){
+				himall.openVW('user/bill/manage.html');
+				
+			})
+			
+			
+			
+		</script>
+		
+		
+		
+	</body>
+
+</html>

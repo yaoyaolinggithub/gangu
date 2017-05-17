@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+		<style>
+
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id="rightNabar" class="mui-icon mui-pull-right">
+				<p style="color: #fff;margin-top: 8px;">保存</p>
+			</a>
+			<h1 class="mui-title">我的资料</h1>
+		</header>
+		<div class="mui-content">
+			<dir></dir>
+			<div class="mui-input-group" id="nomarlReg">
+				<div class="mui-input-row">
+					<label>用户昵称</label>
+					<input id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入用户昵称">
+				</div>
+				<div class="mui-input-row mui-password">
+					<label>真实姓名</label>
+					<input id='userName' type="text" class="mui-input-clear mui-input" placeholder="请输入真实姓名">
+				</div>
+				<div class="mui-input-row">
+					<label>邮箱</label>
+					<input id='email' type="email" class="mui-input-clear mui-input" placeholder="请输入邮箱">
+				</div>
+				<div class="mui-input-row">
+					<label>手机号码</label>
+					<input id='phone' type="number" min="11" max="11" class="mui-input-clear mui-input" placeholder="请输手机号">
+				</div>
+				<div class="mui-input-row">
+					<label>微信号</label>
+					<input id='qq' name="phone" type="text" class="mui-input-clear mui-input" placeholder="请输微信号">
+				</div>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script type="text/javascript">
+			mui.init();
+				var profiledata,
+					profileulr;
+			
+			mui.plusReady(function() {
+				
+				document.getElementById('account').value =localStorage.getItem('MyName');
+				   document.getElementById('userName').value =localStorage.getItem('MyLeaName');
+				   document.getElementById('email').value =localStorage.getItem('MyMall');
+				   document.getElementById('phone').value =localStorage.getItem('MyTel');
+				   document.getElementById('qq').value =localStorage.getItem('MyWeiXin');
+
+				mui('#rightNabar').on('tap', 'p', function() {
+					var account = document.getElementById('account'),
+						userName = document.getElementById('userName'),
+						email = document.getElementById('email'),
+						phone = document.getElementById('phone'),
+						qq = document.getElementById('qq');
+						addDataToLocalName(account.value);
+						addDataToLocallearName(userName.value);
+						addDataToLocalMall(email.value);
+						addDataToLocaltel(phone.value);
+						addDataToLocalweixin(qq.value);
+				 
+					
+					if(account.value.length < 1 ){
+						plus.nativeUI.toast("请输入用户名昵称");
+						
+						return;
+					};
+					if(userName.value.length < 1){
+						plus.nativeUI.toast("请输入真实姓名");
+						return;
+					};
+					if(email.value.length < 1){
+						plus.nativeUI.toast("请输入邮箱");
+						return;
+					};
+					if(phone.value.length < 1){
+						plus.nativeUI.toast("请输手机号码");
+						return;
+					};
+					if(phone.value.length < 11){
+						plus.nativeUI.toast("请输入正确手机号");
+						return;
+					};
+					if(qq.value.length < 1){
+						plus.nativeUI.toast("请输入微信号");
+						return;
+					};
+					
+					profileulr = 'api/UserCenter/UpdateUserInfo';
+					profiledata = {
+						nick	 : account.value,
+						realname : userName.value,
+						email    : email.value,
+						cellphone: phone.value,
+						qq		 : qq.value
+					}
+					mui.ajax(URL + profileulr, {
+						data: JSON.stringify(profiledata),
+						dataType: 'json',
+						contentType: 'application/json',
+						type: 'POST',
+						timeout: 10000,
+						success: function(data) {
+							if(data.success == false) {
+								plus.nativeUI.toast(data.msg);
+							} else {
+
+								plus.nativeUI.toast(data.msg);
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							//							plus.nativeUI.toast('提交订单失败，请检查网络');
+							plus.nativeUI.toast('提交订单失败，请检查网络');
+						}
+
+					});
+					
+				});
+
+			});
+			function addDataToLocalName(data) {
+				localStorage.setItem('MyName', data);
+			}
+
+			function addDataToLocallearName(data) {
+				localStorage.setItem('MyLeaName', data);
+			}
+
+			function addDataToLocalMall(data) {
+				localStorage.setItem('MyMall', data);
+			}
+
+			function addDataToLocaltel(data) {
+				localStorage.setItem('MyTel', data);
+			}
+
+			function addDataToLocalweixin(data) {
+				localStorage.setItem('MyWeiXin', data);
+			}
+		</script>
+	</body>
+
+</html>

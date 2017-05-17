@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no,email=no" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<style type="text/css">
+			.transparent-bg {
+				background: #ff176b;
+			}
+			
+			.transparent-bg a {
+				color: #fff;
+			}
+			
+			.myBill{
+				float: left; width: 31%;background: white;
+			}
+			.p1{
+				 font-weight: 800; color: white;
+			}
+			.p2{
+				padding-left: 5%;text-align: left;color: white;font-size: smaller;font-weight: 300;
+				width: 100%;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+			.p3{
+				padding-left: 5%;text-align: left;color: #0d455e;font-size: small;font-weight: 300;
+			}
+			.p4{
+				padding-bottom: 5%; padding-left: 5%;text-align: left;color: white;font-size: small;font-weight: 300;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-navs transparent-bg">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-title">我的账单</a>
+		</header>
+		<div id="" class="scroll-div" style="background: white;">
+			<div id="" style="padding: 3% 0;background: #F2F2F2;">
+				<span id="sum" style="font-size: larger;padding: 1% 5%; font-weight: 500; color: #e41d62;">
+					收益总计:&nbsp;&nbsp;&nbsp;0&nbsp;元
+				</span>
+			</div>
+			<div id="" style="background: white;text-align: center;">
+				<div id="array">
+					 
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/app.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function(){
+				var ws = plus.webview.currentWebview();
+					orderStatus = ws.orderStatus;
+					document.getElementById("sum").innerHTML = "收益总计:"+'&nbsp;&nbsp;&nbsp;' + orderStatus.TotalAmount+'&nbsp;'+'元';
+					var html = "";
+						html += '<div  class="myBill" style="margin:1% 1% 0 1%;"><div id="fhmx" style="background: #19b0f3;padding-top: 5%;"><img src="images/fenhong.PNG" /><p id="" class="p1">分红</p>'+
+							'<p id="leji" class="p2">累计收益:'+ orderStatus.Totalggfh +'</p><p class="p3">查看明细</p><p id="dayS" class="p4">今日收益:'+orderStatus.Todayggfh+'</p></div></div>';
+						html +='<div id="" class="myBill" style="margin: 1% 1% 0 1%; "><div id="ggmx" style="background: #816af9;padding-top: 5%;"><img src="images/gangu.PNG" /><p id="" class="p1">干股</p>'+
+							'<p id="ggleiji" class="p2">累计干股:'+orderStatus.Zggnum+'</p><p class="p3">查看明细</p><p id="ggdays" class="p4">有效干股:'+orderStatus.Yxggnum+'</p></div></div>';
+						html +='<div id="" class="myBill" style="margin: 1% 1% 0 1%; "><div id="jfmx" style="background: #ff176b;padding-top: 5%;"><img src="images/jifen.PNG" /><p id="" class="p1">积分</p>'+
+							'<p id="jfleiji" class="p2">累计积分:'+orderStatus.UsZpoints+'</p><p class="p3">查看明细</p><p id="jfdays" class="p4">剩余积分:'+orderStatus.Uspoints+'</p></div></div>';
+						html +='<div id="" class="myBill" style="margin:0 1% 0 1%;"><div id="tjmx" style="background: #f373e0;padding-top: 5%;"><img src="images/tuijian.PNG" /><p id="" class="p1">推荐奖</p>'+
+							'<p id="tjjleiji" class="p2">累计收益:'+orderStatus.Totalxftj+'</p><p class="p3">查看明细</p><p id="tjjdays" class="p4">今日收益:'+orderStatus.Todayxftj+'</p></div></div>';
+						document.getElementById('array').innerHTML = html;
+					if (orderStatus.UsGrade > 0) {
+						html = "";
+						html += '<div id="" class="myBill" style="margin: 0 1% 0 1%; "><div id="hhrj" style="background: #59da76;padding-top: 5%;"><img src="images/hehuo.PNG" /><p id="" class="p1">合伙人奖</p>'+
+							'<p id="hhrleiji" class="p2">累计收益:'+orderStatus.Totalhhtg+'</p><p class="p3">查看明细</p><p id="hhrdays" class="p4">今日收益:'+orderStatus.Todayhhtg+'</p></div></div>';
+						html +='<div id="" class="myBill" style="margin: 0 1% 0 1%;  "><div id="hhrblj" style="background: #2e8bf3;padding-top: 5%;"><img src="images/bole.PNG" /><p id="" class="p1">合伙人伯乐奖</p>'+
+							'<p id="blleiji" class="p2">累计收益:'+orderStatus.Totalhhbl+'</p><p class="p3">查看明细</p><p id="bldays" class="p4">今日收益:'+orderStatus.Todayhhbl+'</p></div></div>';
+						html += '<div id="" class="myBill" style="margin: 0 1% 0 1%;"><div id="hhrglj" style="background: #fb2f90;padding-top: 5%;"><img src="images/guanli.PNG" /><p id="" class="p1">合伙人管理奖</p>'+
+								'<p id="glleiji" class="p2" style="margin: 20% 0px; ">累计收益:'+orderStatus.Totalhhgl+'</p><p class="p3" style="padding-bottom: 15%; ">查看明细</p><p id="gldays" class="p4" style="display: none;">今日收益:'+orderStatus.Todayhhgl+'</p></div></div>';
+						html += '<div id="" class="myBill" style="margin: 0 1% 0 1%;"><div id="zs" style="background: #19b1f4;padding-top: 5%;"><img src="images/zhaoshang.PNG" /><p id="" class="p1">合伙人招商奖</p>'+
+								'<p id="zsleiji" class="p2">累计收益:'+orderStatus.Totalhhzs+'</p><p class="p3">查看明细</p><p id="zsdays" class="p4">今日收益:'+orderStatus.Todayhhzs+'</p></div></div>';
+						html +='<div id="" class="myBill" style="margin: 0 1% 0 1%;"><div id="kong" style="background: #f373e0; "><img src="images/fenkuai.PNG" /></div></div>';
+						document.getElementById('array').insertAdjacentHTML('beforeend', html);
+					}
+					
+				document.getElementById('fhmx').addEventListener('tap',function(){
+				himall.openVW('participation.html', 'user/bill/participation.html', {
+							orderStatus: orderStatus.Totalggfh
+					});
+				
+			});
+			 //干股列表
+			document.getElementById('ggmx').addEventListener('tap',function(){
+				himall.openVW('performance.html', 'user/bill/performance.html', {
+							orderStatus: orderStatus.Zggnum
+						});
+				
+			});
+			document.getElementById('jfmx').addEventListener('tap',function(){
+				himall.openVW('integral.html', 'user/bill/integral.html', {
+							orderStatus: orderStatus.UsZpoints
+						});
+				
+			});
+			document.getElementById('tjmx').addEventListener('tap',function(){
+				himall.openVW('Referral.html', 'user/bill/Referral.html', {
+							orderStatus: orderStatus.Totalxftj
+						});
+				
+			});
+			document.getElementById('hhrj').addEventListener('tap',function(){
+				himall.openVW('partner.html', 'user/bill/partner.html', {
+							orderStatus: orderStatus.Totalhhtg
+						});
+				
+			});
+			document.getElementById('hhrblj').addEventListener('tap',function(){
+				himall.openVW('talent.html', 'user/bill/talent.html', {
+							orderStatus: orderStatus.Totalhhbl
+						});
+				
+			});
+			//管理奖
+			document.getElementById('hhrglj').addEventListener('tap',function(){
+				himall.openVW('manage.html', 'user/bill/manage.html', {
+							orderStatus: orderStatus.Totalhhgl
+						});
+				
+			});
+		    document.getElementById('zs').addEventListener('tap',function(){
+		    	himall.openVW('manage.html', 'user/bill/zhaoshang.html', {
+							orderStatus: orderStatus.Totalhhzs
+						});
+		    });
+			})
+			
+			 
+
+			
+			 
+		</script>
+	</body>
+
+</html>

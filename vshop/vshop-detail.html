@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no,email=no" />
+		<title>微店详情页</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css" rel="stylesheet" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">微店详情页</h1>
+			
+		</header>
+		<div id="scrollDiv" class="scroll-div">
+			<div class="mui-content transparent">
+				<div id="slider" class="mui-slider">
+					<div class="mui-slider-group mui-slider-loop" id="sliderImg" style="height: 150px;"></div>
+					<div class="mui-slider-indicator"></div>
+				</div>
+				
+				<div id="vshopHead"></div>
+				<div class="vshop-nav">
+					<a id="vshopAllPro">全部商品</a>
+					<!--<a id="vshopIntro">店铺介绍</a>-->
+					<a id="vshopCategory">店铺分类</a>
+				</div>
+				
+				<div class="vshop-coupon" id="vshopCoupon">
+	            </div>
+				<!--<h3 class="custom-title">热销商品</h3>-->
+				<ul class="mui-table-view mui-grid-view mui-clearfix vshop-product" id="productsList">
+				</ul>
+	
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/delayimg.min.js"></script>
+		<script>
+			mui.init({swipeBack: true});
+			
+			var vshopid,
+				productList;
+			mui.plusReady(function() {
+				vshopid=plus.webview.currentWebview().vshopId;
+				var w=plus.nativeUI.showWaiting('',{padlock:true});
+				mui.ajax(URL+'api/VShop/GetVShop/'+vshopid,{
+					dataType:'json',
+					type:'get',
+					timeout:10000,
+					success:function(data){
+						if(data.Success=='True'){
+							var imgLen=data.SlideImgs.length,
+								slider=document.getElementById('sliderImg');
+							if(imgLen>1){
+								//轮播图
+								var outputimg = ""; 
+					            var outputright = "";
+					            outputimg+='<div class="mui-slider-item mui-slider-item-duplicate"><a class="b-href" data-href="'+data.SlideImgs[imgLen-1].Url+'"><img src="'+data.SlideImgs[imgLen-1].ImageUrl+'" /></a></div>';
+					            for (var i = 0; i < imgLen; i++) {
+					            	outputimg+='<div class="mui-slider-item"><a class="b-href" data-href="'+data.SlideImgs[i].Url+'"><img src="'+data.SlideImgs[i].ImageUrl+'" /></a></div>';
+					                outputright +='<div class="mui-indicator'+(i == 0?' mui-active':'')+'"></div>';;
+					            }
+					            outputimg+='<div class="mui-slider-item mui-slider-item-duplicate"><a class="b-href" data-href="'+data.SlideImgs[0].Url+'"><img src="'+data.SlideImgs[0].ImageUrl+'"  /></a></div>';
+					            slider.innerHTML=outputimg;
+					            document.getElementsByClassName('mui-slider-indicator')[0].innerHTML=outputright;
+								slider.style.height=slider.offsetWidth/2+'px';
+								mui('.mui-slider').slider({interval:5000});
+					            
+							}else if(imgLen==1){
+								slider.innerHTML='<div class="mui-slider-item"><a class="b-href" data-href="'+data.SlideImgs[0].Url+'"><img src="'+data.SlideImgs[0].ImageUrl+'" /></a></div>';
+								mui('#slider').slider();
+							}else{
+								document.getElementById('slider').style.display='none';
+							}
+//							var vshopHead='';
+//							vshopHead+='<div class="vshop-head">'+
+//								'<a><img src="../images/blank.gif" data-delay="'+data.VShop.Logo+'"/></a>'+
+//								'<a>'+data.VShop.Name+'</a>';
+//								if(data.VShop.Favorite)
+//									vshopHead+='<i data-shopid="'+data.VShop.ShopId+'" class="addFavoriteShop iconfont icon-guanzhu red"></i>';
+//								else
+//									vshopHead+='<i data-shopid="'+data.VShop.ShopId+'" class="addFavoriteShop iconfont icon-guanzhu"></i>';
+//							vshopHead+='</div>';
+//							document.getElementById('vshopHead').innerHTML=vshopHead;
+							
+							var liWidth=document.body.offsetWidth*0.4;
+							if(data.Coupon){
+								var couponList='<ul class="mui-clearfix">',
+									color;
+								for(var i=0; i<data.Coupon.length; i++){
+									if(data.Coupon[i].Price<50)
+										color='coupon-blue';
+									else if(data.Coupon[i].Price>=100)
+										color='coupon-gold';
+									else
+										color='coupon-red';
+				                    couponList+='<li class="getCoupon '+color+'" style="width:'+liWidth+'px" data-id="'+data.Coupon[i].Id+'">'+
+				                        '<div class="coupon-price">'+
+				                            '<h3><i>¥</i>'+parseInt(data.Coupon[i].Price)+'<span>券</span></h3>'+
+				                        '</div>'+
+				                        '<div class="coupon-btn">'+
+				                        	'<p>满 '+parseInt(data.Coupon[i].OrderAmount)+'<br/>立减</p>'+
+				                        	'<a>领取</a>'+
+				                        '</div>'+
+				                    '</li>';
+				                }
+				                couponList+='</ul>';
+				                document.getElementById('vshopCoupon').innerHTML=couponList;
+				                document.getElementById('vshopCoupon').getElementsByTagName('ul')[0].style.width=document.body.offsetWidth*0.4*data.Coupon.length+'px';
+							}
+							
+							if(data.Products.length>0){
+								productList='';
+								for(var j=0; j<data.Products.length; j++){
+									productList+='<li class="mui-table-view-cell mui-media mui-col-xs-6">'+
+	                        			'<div class="vshop-product-box">'+
+											'<a data-id="'+data.Products[j].Id+'">'+
+												'<div class="p-img"><b data-delay-background="'+data.Products[j].ImageUrl+'"></b></div>'+
+												'<div class="mui-media-body">'+data.Products[j].Name+'</div>'+
+												'<p class="vshop-product-price"><span style="float: right;color:#ff176b">'+data.Products[j].Spoints+'积分</span><span style="float: left;color:#000000">¥ '+data.Products[j].SalePrice+'</span></p>'+
+											'</a>'+
+										'</div>'+
+				            		'</li>';
+								}
+								document.getElementById('productsList').innerHTML=productList;
+							}
+							delayimg.init({content:document.getElementById('scrollDiv')});
+							w.close();
+							document.getElementsByClassName("mui-content")[0].className="mui-content";
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						w.close();
+						reloadWvLoad();
+					}
+				});
+				
+				
+				//添加列表项的点击事件
+				mui('.mui-content').on('tap', '.vshop-product a', function() {
+					var id = this.getAttribute('data-id');
+					showProduct(id,'/');
+				});
+					
+				mui('.mui-content').on('tap', '.addFavoriteShop', function() {
+					var _this=this;
+					if(himall.isLogin()){
+						var w=plus.nativeUI.showWaiting('',{padlock:true});
+						var shopid=_this.getAttribute('data-shopid');
+						mui.ajax(URL+'api/VShop/PostAddFavoriteShop',{
+							data:JSON.stringify({shopId:shopid}),
+							dataType:'json',
+							contentType:'application/json',
+							type:'POST',
+							timeout:10000,
+							success:function(data){
+								w.close();
+								if(data.Success=="true"){
+									plus.nativeUI.toast(data.Msg);
+									if(_this.className.indexOf('red')>=0)
+										_this.className=_this.className.replace(' red','');
+									else
+										_this.className+=' red';
+									
+								}else{
+									plus.nativeUI.toast('关注店铺失败');
+								}
+							},
+							error:function(xhr,type,errorThrown){
+								w.close();
+								plus.nativeUI.toast('关注失败，请检查网络')
+							}
+						});
+					}else{
+						showLogin({},'/');
+					}
+					
+				});
+				
+				mui('#vshopCoupon').on('tap', '.getCoupon', function() {
+					if(himall.isLogin()){
+						var w=plus.nativeUI.showWaiting('',{padlock:true});
+						var _this=this,
+							couponId = this.getAttribute('data-id');
+						mui.ajax(URL+'api/coupon/PostAcceptCoupon',{
+							data:JSON.stringify({vshopId:vshopid,couponId:couponId}),
+							dataType:'json',
+							contentType:'application/json',
+							type:'POST',
+							timeout:10000,
+							success:function(data){
+								w.close();
+								if(data.Success=="true"){
+									_this.getElementsByTagName('a')[0].innerText='已领取';
+									_this.className='coupon-gray';
+									plus.nativeUI.toast('优惠券领取成功');
+								}else{
+									if(data.Status==2)
+										plus.nativeUI.toast('优惠券已经过期');
+									if(data.Status==3)
+										plus.nativeUI.toast('达到每个用户领取最大张数');
+									if(data.Status==4)
+										plus.nativeUI.toast('优惠券已领完');
+									if(data.Status==5)
+										plus.nativeUI.toast('积分不足');
+									_this.className='coupon-gray';
+								}
+							},
+							error:function(xhr,type,errorThrown){
+								w.close();
+								plus.nativeUI.toast('优惠券领取失败，请检查网络')
+							}
+						});
+					}else{
+						showLogin({},'/');
+					}
+				});
+				
+				mui('.mui-content').on('tap', '.b-href', function() {
+					var href=this.getAttribute('data-href').toLowerCase(),
+						id;
+					if(href.indexOf('product/detail/')>=0){
+						id=href.split('product/detail/')[1];
+						showProduct(id,'/');
+					}else if(href.indexOf('topic/detail/')>=0){
+						id=href.split('topic/detail/')[1];
+						himall.openVW('topic-detail.html','../topic-detail.html',{topicId:id})
+					}else{
+						plus.runtime.openURL(href)
+					}
+				});
+				
+				document.getElementById('vshopAllPro').addEventListener('tap',function(){
+					himall.openVW('vshop-search.html','',{vshopId:vshopid,keywords:''});
+				});
+				
+//				document.getElementById('vshopIntro').addEventListener('tap',function(){
+//					himall.openVW('vshop-intro.html','',{vshopId:vshopid});
+//				});
+				
+				document.getElementById('vshopCategory').addEventListener('tap',function(){
+					himall.openVW('vshop-category.html','',{vshopId:vshopid});
+					
+				});
+			});
+			
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no,email=no" />
+		<title>提现纪录</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+		<style type="text/css">
+			.transparent-bg {
+				background: #ff176b;
+			}
+			
+			.transparent-bg a {
+				color: #fff;
+			}
+			
+			.mui-list {
+				background-color: #ffffff;
+			}
+			
+			.mui-content-list {
+				background-color: #ffffff;
+			}
+			
+			.mui-content-list ul {
+				border-top: 2px solid #f2f2f2;
+				width: 100%;
+				padding: 3%;
+				background: #ffffff;
+			}
+			
+			.mui-content-list ul li {
+				display: inline;
+				/*font-size: large;*/
+			}
+			
+			.mui-content-list ul li a {
+				color: black;
+				font-weight: bold;
+			}
+			
+			.mui-title {
+				font-size: larger;
+				font-weight: bold;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-navs transparent-bg">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-title">提现纪录</a>
+		</header>
+		<div class="scroll-div">
+			<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<!--数据列表-->
+					<ul class="mui-table-view mui-table-view-chevron">
+						<li id="txList" class="mui-content-list ">
+
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/delayimg.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script type="text/javascript">
+			var page = 1,
+				loadPage;
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					deceleration: 0.0006,
+					down: {
+						contentrefresh: "正在加载...",
+						contentnomore: '已加载全部商品',
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						contentover: "释放立即刷新",
+						callback: pullupRefresh
+					}
+				}
+			});
+			function pulldownRefresh() {
+				setTimeout(function() {
+					loadPage();
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+				}, 1500);
+			}
+			var count = 0;
+
+			function pullupRefresh() {
+				setTimeout(function() {
+                    page++;     
+					var table = document.body.querySelector('.mui-table-view');
+					var cells = document.body.querySelectorAll('.mui-table-view-cell');
+					mui.ajax(URL + 'api/usercenter/GetUsTxList?pageNo=' + page + '&pageSize=10', {
+						dataType: 'json',
+						type: 'get',
+						timeout: 10000,
+						success: function(data) {
+							if(data.Total <= page * 10) {
+								document.getElementById('txList').insertAdjacentHTML('beforeend', initData(html, data));
+								delayimg.render();
+							}else{
+								
+							}
+						}
+					});
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+				}, 300);
+			}
+			if(mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 1000);
+
+				});
+			} else {
+				mui.ready(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				});
+			}
+			html = '';
+			mui.plusReady(function() {
+				loadPage = function() {
+					mui.ajax(URL + 'api/usercenter/GetUsTxList?pageNo=1&pageSize=10', {
+						dataType: "json",
+						type: "get",
+						timeout: 1000,
+						success: function(data) {
+							if(data.Success == true) {
+								if(data.Data.length > 0) {
+									document.getElementById('txList').innerHTML = initData(html, data);
+									delayimg.init();
+
+								} else {
+									plus.nativeUI.alert('您还没有提现记录');
+									document.getElementById('txList').innerHTML = '<div id="" style="text-align: center;padding-top: 50%;"><p>您还没有提过现</p></div>'
+								}
+
+								window.scrollTo(0, 0)
+								plus.navigator.closeSplashscreen();
+								document.getElementById('pullrefresh').className = 'mui-content mui-scroll-wrapper';
+							} else {
+								plus.nativeUI.alert('请检查网络');
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							plus.nativeUI.toast('请检查网络')
+						}
+					});
+				}
+				loadPage();
+			});
+
+			function initData(html, data) {
+				for(var i = 0; i < data.Data.length; i++) {
+					if(parseInt(data.Data[i].ApplyStatus) == 1) {
+						html += '<ul>' +
+							'<li><a>' + data.Data[i].ApplyTime + '</a><a style="float: right;">待处理 ...</a></li>' +
+							'<li>' +
+							'<h6 style=" font-weight: bold;">提现金额:' + data.Data[i].ApplyAmount + '</h6>' +
+							'</li>' +
+							'</ul>';
+					}
+					if(parseInt(data.Data[i].ApplyStatus) == 3) {
+						html += '<ul>' +
+							'<li><a>' + data.Data[i].ApplyTime + '</a><a style="float: right;">提现成功 ...</a></li>' +
+							'<li>' +
+							'<h6 style=" font-weight: bold;">提现金额:' + data.Data[i].ApplyAmount + '</h6>' +
+							'</li>' +
+							'</ul>';
+					}
+					if(parseInt(data.Data[i].ApplyStatus) == 4) {
+						html += '<ul>' +
+							'<li><a>' + data.Data[i].ApplyTime + '</a><a style="float: right;">已拒绝  ...</a></li>' +
+							'<li>' +
+							'<h6 style=" font-weight: bold;">提现金额:' + data.Data[i].ApplyAmount + '</h6>' +
+							'</li>' +
+							'</ul>';
+					}
+
+				}
+				return html;
+			}
+		</script>
+	</body>
+
+</html>

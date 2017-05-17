@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no,email=no" />
+		<title>商品评论列表</title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<style>.mui-preview-header{ bottom: auto; top: 10px;}</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">商品评论</h1>
+		</header>
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper transparent">
+			<div class="mui-scroll">
+				<ul class="comment-class cl" id="commentClass"></ul>
+				<ul class="comment-list" id="commentList">
+				</ul>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/delayimg.min.js"></script>
+		<script src="js/mui.zoom.js"></script>
+		<script src="js/mui.previewimage.js"></script>
+		<script>
+			var pId,
+				commentType=0,
+				isnodata = false,
+				page = 1,
+				lodaPage,
+				commentClass=document.getElementById('commentClass'),
+				commentList=document.getElementById('commentList');
+			mui.init({
+				pullRefresh : {
+				    container:'#pullrefresh',
+				    deceleration:0.0006,
+				    up : {
+					    contentrefresh : "正在加载...",
+					    contentnomore:'已加载全部',
+					    callback :function(){
+					      	var self=this;
+					      	if (!isnodata) {
+					      		page++;
+						        mui.ajax(URL+'api/Product/GetProductComment?pId='+pId+'&commentType='+commentType+'&pageNo='+page+'&pageSize=10',{
+									dataType:'json',
+									type:'get',
+									timeout:10000,
+									success:function(data){
+					                    var html = '';
+					                    if(data.List.length > 0) {
+								        	commentList.insertAdjacentHTML('beforeend',initData(html,data));
+											delayimg.render();
+											mui.previewImage();
+								        }else{
+											isnodata = true;
+										}
+										self.endPullupToRefresh(isnodata);
+									},
+									error:function(xhr,type,errorThrown){
+										plus.nativeUI.toast('请求失败，请检查网络')
+									}
+								});
+						    }else{
+						    	self.endPullupToRefresh(isnodata);
+						    }
+				    	}
+				    }
+				},
+				swipeBack: true
+			});
+			if (mui.os.android)
+				document.getElementsByClassName('mui-scroll')[0].className='';
+			
+			mui.plusReady(function() {
+				var ws=plus.webview.currentWebview();
+				pId=ws.pId;
+				ws.setStyle({scrollIndicator:'none'});
+				lodaPage=function(){
+					var w=plus.nativeUI.showWaiting('',{padlock:true});
+					mui.ajax(URL+'api/Product/GetProductComment?pId='+pId+'&commentType='+commentType+'&pageNo=1&pageSize=10',{
+						dataType:'json',
+						type:'get',
+						timeout:10000,
+						success:function(data){
+							if(commentClass.innerHTML==''){
+								commentClass.innerHTML='<li class="cur">全部</li><li>好评('+data.GoodCount+')</li><li>中评('+data.MediumCount+')</li><li>差评('+data.BadCount+')</li><li>有图('+data.ImageCount+')</li><li>追加('+data.AppendCount+')</li>';
+							}
+							var html='';
+					        if (data.List.length > 0) {
+					            commentList.innerHTML=initData(html,data);
+					            delayimg.init();
+					            mui.previewImage();
+					            page = 1;
+								isnodata = false;
+								mui('#pullrefresh').pullRefresh().refresh(true);
+					        }else{
+					        	html+='<div class="empty-show"><h4>暂无该类评论</h4></div>';
+					        	document.getElementById('commentList').innerHTML=html;
+					        }
+					        w.close();
+							document.getElementById('pullrefresh').className='mui-content mui-scroll-wrapper';
+						},
+						error:function(xhr,type,errorThrown){
+							w.close();
+							reloadWvLoad();
+						}
+					});
+				}
+				lodaPage();
+				
+			});
+			
+			mui('#commentClass').on('tap', 'li', function() {
+				commentType = getIndex(this);
+				document.querySelector('#commentClass .cur').className='';
+				this.className='cur';
+				lodaPage();
+			});
+			
+			function initData(html,data){
+				for(var i=0;i<data.List.length;i++){
+					html+='<li class="border-top">'+
+						'<h3>'+data.List[i].UserName+'</h3>'+
+						'<p>'+data.List[i].ReviewContent+'</p>';
+						if(data.List[i].ReplyContent!='暂无回复')
+							html+='<h2>卖家回复：'+data.List[i].ReplyContent+'</h2>';
+						html+='<h5>'+data.List[i].ReviewDate.substring(0,10).replace(/-/g,'.')+' &nbsp; '+data.List[i].Sku+'</h5>';
+						if(data.List[i].Images.length>0){
+							html+='<div class="comment-img cl">';
+							for(var j=0; j<data.List[i].Images.length; j++){
+								html+='<div class="mui-zoom"><img src="images/blank.gif" data-delay="'+data.List[i].Images[j].CommentImage+'" data-preview-src="" data-preview-group="1" data-content="'+data.List[i].ReviewContent+'" /></div>';
+							}
+							html+='</div>';
+						}
+						if(data.List[i].AppendDate){
+							html+='<h4>收货'+data.List[i].AppendDays+'天后追加</h4>'+
+							'<p>'+data.List[i].AppendContent+'</p>';
+							if(data.List[i].ReplyAppendContent)
+								html+='<h2>卖家回复：'+data.List[i].ReplyAppendContent+'</h2>';
+							if(data.List[i].AppendImages.length>0){
+								html+='<div class="comment-img cl">';
+								for(var j=0; j<data.List[i].AppendImages.length; j++){
+									html+='<div class="mui-zoom"><img src="images/blank.gif" data-delay="'+data.List[i].AppendImages[j].CommentImage+'" data-preview-src="" data-preview-group="1" data-content="'+data.List[i].AppendContent+'" /></div>';
+								}
+								html+='</div>';
+							}
+						}
+					html+='</li>';
+	            }
+				return html;
+			}
+			
+		</script>
+	</body>
+
+</html>

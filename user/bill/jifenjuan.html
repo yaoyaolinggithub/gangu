@@ -1,0 +1,193 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/style.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/feedback.css" />
+		<style>
+			.mui-content {
+				margin: 0px;
+				padding: 0px;
+				background: #fff;
+			}
+			
+			#integral {
+				margin-top: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">积分券</h1>
+		</header>
+		<div id="dcontentnt" class="dcontent"></div>
+		<div class="mui-content">
+			<div class="" style="background: #f2f2f2;">
+				<a id="" style="line-height: 50px;">&nbsp;&nbsp;积分券：
+					<span id="yue" style="color:#ff176b;">0</span>
+					<span id="mingxi" style="float: right;margin-right: 10px;">
+						查看明细
+					</span>
+				</a>
+			</div>
+			<div id="integral">
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/app.js"></script>
+		<script src="../../js/delayimg.min.js"></script>
+
+		<script type="text/javascript">
+			mui.init();
+
+			var pays = {},
+				isCashOnDelivery = false,
+				jfq = 0,
+				mask;
+
+			var state = himall.getState();
+			var lastAmount = 0;
+			state = state.userId;
+
+			function reurl() {
+					state = himall.getState();
+					userId = state.userId;
+					mui.ajax(URL + 'api/UserCenter/GetUser/' + userId, {
+						dataType: 'json',
+						type: 'get',
+						timeout: 10000,
+						success: function(data) {
+							if(data.Success == 'true') {
+                                document.getElementById('yue').innerHTML = data.QBalance;
+							} else {
+								plus.nativeUI.toast('重新打开');
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							plus.nativeUI.toast('请检查网络');
+						}
+					});
+				 
+			}
+			 
+			mui.plusReady(function() {
+				loadPage = function() {
+					mui.ajax(URL + 'api/UserCenter/GetJfqList?pageNo=1&pageSize=10', {
+						dataType: 'json',
+						type: 'get',
+						timeout: 10000,
+						success: function(data) {
+							if(data.Success == true) {
+								html = "";
+								document.getElementById('integral').innerHTML = initData1(html, data);
+								reurl();
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							plus.nativeUI.toast('请求失败，请检查网络')
+						}
+					});
+				}
+				loadPage();
+				initPay('dcontentnt');
+			});
+ 
+			function initData1(html, data) {
+				for(var i = 0; i < data.Data.length; i++) {
+					html += '<div data-tar="' + data.Data[i].JfAmount + '"><img  style="padding: 10px 10px; width: 100%;height: 100%;border-radius: 20px;margin-top: -10px;" src="' + data.Data[i].picurl + '" /></div>';
+				}
+				return html;
+			}
+			document.getElementById('mingxi').addEventListener('tap', function() {
+				himall.openVW('jifenmingxi.html')
+			})
+			window.addEventListener('updateData', function() {
+				isCashOnDelivery = false;
+				loadPage();
+
+			});
+			mui('#integral').on('tap', 'div', function() {
+
+				var w = plus.nativeUI.showWaiting('', {
+					padlock: true
+				});
+				var id = this.getAttribute('data-tar');
+				mui.ajax(URL + 'api/Payment/ChargeSubmit', {
+					data: JSON.stringify({
+						jfqamount: id
+					}),
+					dataType: 'json',
+					contentType: 'application/json',
+					type: 'post',
+					timeout: 10000,
+					success: function(data) {
+
+						if(data.success == 'f1') {
+							w.close();
+							plus.nativeUI.alert(data.Msg);
+						} else {
+							if(data.success == 'f2') {
+								w.close();
+								plus.nativeUI.alert(data.Msg);
+							} else {
+								if(data.success == true) {
+									if(id < 0) {
+										w.close();
+										plus.nativeUI.alert('订单需支付金额为零，购买成功，等待发货', function() {
+											openOrderList(2);
+										});
+									} else {
+										jfq = data.msg;
+										w.close();
+										if(!mask)
+											mask = mui.createMask(function() {
+												document.getElementById('dcontentnt').className = 'dcontent';
+											});
+										mask.show();
+										document.getElementById('dcontentnt').className = 'dcontent active';
+									}
+
+								}
+							}
+						}
+
+					},
+					error: function(xhr, type, errorThrown) {
+						plus.nativeUI.toast("检查网络");
+					}
+
+				});
+
+			});
+
+			var wPay = null;
+			mui('#dcontentnt').on('tap', '.custom-btn', function() {
+				payOrders(this.id, jfq,
+					function() {
+						plus.nativeUI.alert("支付成功！", function() {
+							setTimeout(function() {
+								mask.close();
+								document.getElementById('yue').innerText = parseInt(document.getElementById('yue').innerText) + parseInt(this.id);
+								plus.webview.getWebviewById('/user/bill/jifenjuan.html').close('none');
+							}, 1000)
+						});
+					},
+					function() {
+						plus.nativeUI.alert("订单支付失败！", function() {
+							//							openOrderList(1);
+							mask.close();
+						});
+					}
+				)
+
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,420 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+		<style type="text/css">
+			.my-py {
+				background: #fff;
+				overflow: hidden;
+			}
+			
+			.my-py div {
+				width: 33.33%;
+				text-align: center;
+				line-height: 50px;
+				float: left;
+				cursor: pointer;
+			}
+			
+			.zongji {
+				overflow: hidden;
+			}
+			
+			.zongji span {
+				line-height: 50px;
+				float: left;
+				margin-left: 20px;
+				color: #E73470;
+			}
+			
+			.leimu {
+				background: #fff;
+				overflow: hidden;
+				margin-bottom: 20px;
+			}
+			
+			.leimu .up-box {
+				line-height: 50px;
+			}
+			
+			.leimu .down-box {
+				line-height: 50px;
+			}
+			
+			.leimu .up-box span {
+				padding-left: 10px;
+				width: 50%;
+				float: left;
+				border-right: 1px solid #f2f2f2;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+			
+			.leimu .down-box span {
+				/*border-top: 1px solid #f8f8f8;*/
+				padding-left: 10px;
+				width: 50%;
+				float: left;
+				border-right: 1px solid #f2f2f2;
+				border-bottom: 1px solid #F2F2F2;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+			
+			.tab-content a {
+				display: none;
+			}
+			
+			.tab-content .show {
+				display: block;
+			}
+			
+			.selected {
+				color: #e73470;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="mui-content mui-scroll-wrapper" id="pullrefresh">
+			<div class="mui-scroll">
+				<div id="" class="my-py" >
+					<div data-py="0" class="selected" style="border-bottom: 1px solid #e92268;" >我的消费商</div>
+					<a style="height: 30px;width: 2px;position: absolute;background: #f0f0f0;margin: 10px 1px;"  ></a>
+					<div data-py="1" style="border-bottom: 1px solid #e92268;">我的合伙人</div>
+					<a style="height: 30px;width: 2px;position: absolute;background: #f0f0f0;margin: 10px 1px;"  ></a>
+					<div data-py="2" style="border-bottom: 1px solid #e92268;">我的商家</div>
+				</div>
+				<div id="" class="tab-content">
+					<a class="show">
+						<div id="" class="zongji">
+							<span id="zh">合计：0个</span>
+						</div>
+						<div id="tjr" class="leimu">
+
+						</div>
+					</a>
+					<a>
+						<div class="zongji">
+							<span id="hhrzj">合计：0个</span>
+						</div>
+						<div id="hhr" class="leimu">
+
+						</div>
+
+					</a>
+					<a>
+						<div id="" class="zongji">
+							<span id="zhsj">合计：0个</span>
+						</div>
+						<div id="sj" class="leimu">
+
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/delayimg.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			var page = 1,
+				tab1 = true,
+				tab2 = true,
+				tab3 = true,
+				tName = '已加载全部信息',
+				isnodata = false;
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					deceleration: 0.0006,
+					up: {
+						contentrefresh: "正在加载...",
+						contentnomore: tName,
+						callback: function() {
+							var self = this;
+							setTimeout(function() {
+								if(!isnodata) {
+									if(tab1) {
+										page++;
+										mui.ajax(URL + 'api/UserCenter/GetUserTjList?pageNo=' + page + '&pageSize=10', {
+											dataType: 'json',
+											type: 'get',
+											timeout: 10000,
+											success: function(data) {
+												if(data.Success) {
+													document.getElementById('zh').innerText = '合计:' + data.Total + '个';
+													var html = '';
+													document.getElementById('tjr').insertAdjacentHTML('beforeend', initData1(html, data));
+													delayimg.render();
+													if(data.Total <= page * 10) {
+														isnodata = true;
+													}
+													self.endPullupToRefresh(isnodata);
+												}
+											},
+											error: function(xhr, type, errorThrown) {
+												plus.nativeUI.toast('请求失败，请检查网络')
+											}
+										});
+									}
+									if(tab2) {
+										page++;
+										mui.ajax(URL + 'api/UserCenter/GetUserHHList?pageNo=' + page + '&pageSize=10', {
+											dataType: 'json',
+											type: 'get',
+											timeout: 10000,
+											success: function(data) {
+												if(data.Success) {
+													document.getElementById('hhrzj').innerText = '合计:' + data.Total + '个';
+													var html = '';
+													document.getElementById('hhr').insertAdjacentHTML('beforeend', initData1(html, data));
+													delayimg.render();
+													if(data.Total <= page * 10) {
+														isnodata = true;
+													}
+													self.endPullupToRefresh(isnodata);
+												}
+											},
+											error: function(xhr, type, errorThrown) {
+												plus.nativeUI.toast('请求失败，请检查网络')
+											}
+										});
+									}
+									if(tab3) {
+										page++;
+										mui.ajax(URL + 'api/UserCenter/GetUserShopList?pageNo=' + page + '&pageSize=10', {
+											dataType: 'json',
+											type: 'get',
+											timeout: 10000,
+											success: function(data) {
+												if(data.Success) {
+													document.getElementById('zhsj').innerText = '合计:' + data.Total + '个';
+													var html = '';
+													document.getElementById('sj').insertAdjacentHTML('beforeend', initData1(html, data));
+													delayimg.render();
+													if(data.Total <= page * 10) {
+														isnodata = true;
+													}
+													self.endPullupToRefresh(isnodata);
+												}
+											},
+											error: function(xhr, type, errorThrown) {
+												plus.nativeUI.toast('请求失败，请检查网络')
+											}
+										});
+									}
+								} else {
+									self.endPullupToRefresh(isnodata);
+								}
+							}, 1000);
+						}
+					},down: {
+						contentdown: "下拉可以刷新",
+						contentover: "释放立即刷新",
+						contentrefresh: "正在刷新...",
+						callback: function() {
+							setTimeout(function() {
+								isnodata = false;
+								mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+								mui('#pullrefresh').pullRefresh().refresh(true);
+							}, 300)
+						}
+					}
+
+				} 
+			 
+			});
+//			function yyu(){ 
+//				setTimeout(function() {
+//								isnodata = false;
+//								mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+//								mui('#pullrefresh').pullRefresh().refresh(true);
+//							}, 300);
+//			}
+			 
+			var tabs = document.getElementsByClassName('my-py')[0].getElementsByTagName('div'),
+				contents = document.getElementsByClassName('tab-content')[0].getElementsByTagName('a');
+
+			mui('.my-py').on('tap', 'div', function() {
+				var id = this.getAttribute('data-py');
+				if(id == 0) {
+					tab1 = true;
+					tab2 = false;
+					tab3 = false;
+					page = 1;
+					tName = '已加载全部消费商';
+					isnodata = false;
+				}
+				if(id == 1) {
+					 
+					tab1 = false;
+					tab2 = true;
+					tab3 = false;
+					page = 1;
+					tName = '已加载全部合伙人';
+					isnodata = false;
+				}
+				if(id == 2) {
+					 
+					tab1 = false;
+					tab2 = false;
+					tab3 = true;
+					page = 1;
+					tName = '已加载全部商家';
+					isnodata = false;
+				}
+				for(var i = 0, len = tabs.length; i < len; i++) {
+					if(i == id) {
+						tabs[i].className = 'selected';
+						contents[i].className = 'show';;
+					} else {
+						tabs[i].className = '';
+						contents[i].className = '';
+					}
+				}
+			})
+			mui.plusReady(function() {
+				//消费商数据
+				if(tab1) {
+					mui.ajax(URL + 'api/UserCenter/GetUserTjList?pageNo=1&pageSize=10', {
+						dataType: 'json',
+						type: 'get',
+						success: function(data) {
+							 
+							if(data.Success) {
+								if(data.Data.length > 0) {
+									 
+									document.getElementById('zh').innerText = '合计:' + data.Total + '个';
+									html = '';
+									document.getElementById('tjr').innerHTML = initData1(html, data);
+									delayimg.init();
+									if(data.Total < 10) {
+										isnodata = true;
+									}
+								} else {
+									document.getElementById('zh').innerText = '合计:' + 0 + '个';
+									//									plus.nativeUI.toast('您没有推荐人')
+								}
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							plus.nativeUI.toast('请检查网络')
+						}
+					});
+				}
+				if(tab2) {
+					//合伙人数据
+					mui.ajax(URL + 'api/UserCenter/GetUserHHList?pageNo=1&pageSize=10', {
+						dataType: 'json',
+						type: 'get',
+						success: function(data) {
+							if(data.Success) {
+								 
+								if(data.Total < 10) {
+									isnodata = true;
+								}
+
+								if(data.Data.length > 0) {
+									 
+									document.getElementById('hhrzj').innerText = '合计:' + data.Total + '个';
+									html = '';
+									document.getElementById('hhr').innerHTML = initData2(html, data);
+									delayimg.init();
+								} else {
+									document.getElementById('hhrzj').innerText = '合计:' + 0 + '个';
+								}
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							plus.nativeUI.toast('请检查网络')
+						}
+					});
+				}
+				if(tab3) {
+					//商家数据
+					mui.ajax(URL + 'api/UserCenter/GetUserShopList?pageNo=1&pageSize=10', {
+						dataType: 'json',
+						type: 'get',
+						success: function(data) {
+							 
+							if(data.Success) {
+								if(data.Total < 10) {
+									isnodata = true;
+								}
+								if(data.Data.length > 0) {
+									 
+									document.getElementById('zhsj').innerText = '合计:' + data.Total + '个';
+									html = '';
+									document.getElementById('sj').innerHTML = initData3(html, data);
+									delayimg.init();
+								} else {
+									document.getElementById('zhsj').innerText = '合计:' + 0 + '个';
+									//									plus.nativeUI.toast('您没有商家');
+								}
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							plus.nativeUI.toast('请检查网络')
+						}
+					});
+				}
+
+				tab1 = true;
+				tab2 = false;
+				tab3 = false;
+			});
+			//消费商
+			function initData1(html, data) {
+				for(var i = 0; i < data.Data.length; i++) {
+					html += '<div class="up-box">' +
+						'<span>用户名：' + data.Data[i].UserName + '</span>' +
+						'<span>手机号：' + data.Data[i].CellPhone + '</span>' +
+						'</div>' +
+						'<div class="down-box">' +
+						'<span>微信号：' + data.Data[i].QQcode + '</span>' +
+						'<span>年月日：' + data.Data[i].CreateDate + '</span>' +
+						'</div>';
+				}
+				return html;
+			}
+			//合伙人
+			function initData2(html, data) {
+				for(var i = 0; i < data.Data.length; i++) {
+					html += '<div class="up-box">' +
+						'<span>用户名：' + data.Data[i].UserName + '</span>' +
+						'<span>手机号：' + data.Data[i].CellPhone + '</span>' +
+						'</div>' +
+						'<div class="down-box">' +
+						'<span>微信号：' + data.Data[i].QQcode + '</span>' +
+						'<span>年月日：' + data.Data[i].CreateDate + '</span>' +
+						'</div>';
+				}
+				return html;
+			}
+			//商家数据
+			function initData3(html, data) {
+				for(var i = 0; i < data.Data.length; i++) {
+					html += '<div class="up-box">' +
+						'<span>店铺名称：' + data.Data[i].ShopName + '</span>' +
+						'<span>商家帐号：' + data.Data[i].UserName + '</span>' +
+						'</div>' +
+						'<div class="down-box">' +
+						'<span>联系电话：' + data.Data[i].CellPhone + '</span>' +
+						'<span>创建日期：' + data.Data[i].CreateDate + '</span>' +
+						'</div>';
+				}
+				return html;
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no,email=no" />
+		<title>平台攻略</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+		<style type="text/css">
+			.transparent-bg {
+				background: #ff176b;
+			}
+			
+			.transparent-bg a {
+				color: #fff;
+			}
+			.box-a {
+				overflow: hidden;
+				background: #f6f6f6;
+			}
+			.box-a div {
+				padding: 12px 0 12px 0;
+				width: 25%;
+				float: left;
+				text-align: center;
+			}
+			
+			.box-a div a {
+				color: black;
+			}
+			
+			.box-a-s {
+				background: white;
+				border-bottom: 2px solid #de3b3c;
+				
+			}
+			.box-CH div {
+				display: none;
+				
+			}
+			.box-CH .show{
+				display: block;
+				
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-navs transparent-bg">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-title">平台攻略</a>
+		</header>
+		<div class="scroll-div">
+		 
+				<div class="box-a">
+					<div onclick="xz(0)" class="box-a-s">
+						<a>新手必看</a>
+					</div>
+					<div onclick="xz(1)">
+						<a>新手学习</a>
+					</div>
+					<div onclick="xz(2)">
+						<a>用户须知</a>
+					</div>
+					<div style="width: 25%; float: left;">
+						<a>&nbsp;</a>
+					</div>
+				</div>
+				<div id="" style="background: #f6f6f6;width: 100%;">
+					<div class="box-CH" style="border-top: 2px solid #d5d5d5; ">
+				 	<div class="show" >
+				 		<a id="text1" href=""></a>
+				 	</div>
+				 	<div id="">
+				 		<a id="text2"href=""></a>
+				 	</div>
+				 	<div id="">
+				 		<a id="text3" href=""></a>
+				 	</div>
+				 	<div id="">
+				 		<a id="text4" href=""></a>
+				 	</div>
+				 </div>
+				</div> 
+			</div>
+		 
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			var taps = document.getElementsByClassName("box-a")[0].getElementsByTagName('div');
+			    tap_Ch = document.getElementsByClassName('box-CH')[0].getElementsByTagName('div');
+			function xz(idk) {
+				for(var i = 0; i < taps.length; i++) {
+					if(i == idk) {
+						taps[i].className = 'box-a-s';
+						tap_Ch[i].className = 'show';
+					} else {
+						taps[i].className = '';
+						tap_Ch[i].className = ''; 
+					}
+				}
+			}
+			mui.plusReady(function(){
+				mui.ajax(URL+'api/Articles/GetNewsList?topnum=1&cid=0&ctype=20',{
+					dataType: 'json',
+					type:'get',
+					timeout: 1000,
+					success:function(data){
+						
+						document.getElementById('text1').innerHTML=data.Data[0].Content;
+					}
+				});
+				mui.ajax(URL+'api/Articles/GetNewsList?topnum=1&cid=0&ctype=21 ',{
+					dataType: 'json',
+					type:'get',
+					timeout: 1000,
+					success:function(data){
+						
+						document.getElementById('text2').innerHTML=data.Data[0].Content;
+					}
+				});
+				mui.ajax(URL+'api/Articles/GetNewsList?topnum=1&cid=0&ctype=22',{
+					dataType: 'json',
+					type:'get',
+					timeout: 1000,
+					success:function(data){
+						
+						document.getElementById('text3').innerHTML=data.Data[0].Content;
+					}
+				});
+			});
+		</script>
+	</body>
+</html>

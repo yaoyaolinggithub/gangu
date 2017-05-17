@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no,email=no" />
+		<title>更多信息</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+		<style type="text/css">
+			.transparent-bg {
+				background: #ff176b;
+			}
+			
+			.transparent-bg a {
+				color: #fff;
+			}
+			
+			.box-a {
+				height: 50px;
+				/*background: #dcdcdc;*/
+				background: #FFFFFF;
+				line-height: 45px;
+				border-bottom: 2px solid #F8F8F8;
+				overflow: hidden;
+			}
+			
+			.box-a a {
+				float: right;
+				width: 10%;
+				padding: 2% 0 0;
+			}
+			
+			.box-a a img {
+				float: left;
+				width: 20px;
+				height: 20px;
+			}
+			
+			.box-a a p {
+				/*background: red;*/
+				position: absolute;
+				right: 10px;
+			}
+			
+			.box-a img {
+				width: 30px;
+				height: 30px;
+				margin-top: 8px;
+				margin-left: 10px;
+			}
+			
+			.box-a span {
+				left: 60px;
+				position: absolute;
+				margin-top: 4px;
+			}
+			
+			.box-zl {
+				background-color: #EEEEEE;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-navs transparent-bg">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-title">更多</a>
+		</header>
+		<div id="name" class="scroll-div">
+			<div class="box-zl">
+				<div class="box-a" id="myProfile">
+					<img src="../../images/01.PNG" />
+					<span style="position: absolute;">我的资料</span>
+					<a>
+						<img src="../../images/youjiantou.png" />
+					</a>
+				</div>
+				<div class="box-a" id="changePassword">
+					<img src="../../images/02.PNG" />
+					<span>修改密码</span>
+					<a>
+						<img src="../../images/youjiantou.png" />
+					</a>
+
+				</div>
+				<hr style="border: none;" />
+				<!--<div class="box-a" id="tixian">
+					<img src="../../images/03.PNG" />
+					<span>申请提现</span>
+					<a>
+						<img src="../../images/youjiantou.png" />
+					</a>
+				</div>-->
+				<div class="box-a" id="strategy">
+					<img src="../../images/04.PNG" />
+					<span>平台攻略</span>
+					<a>
+						<img src="../../images/youjiantou.png" />
+					</a>
+				</div>
+				<div class="box-a" id="aboutt">
+					<img src="../../images/05.PNG" />
+					<span>常见问题</span>
+					<a>
+						<img src="../../images/youjiantou.png" />
+					</a>
+				</div>
+				<hr style="border: none;" />
+
+				<!--<div class="box-a">
+					<img src="../../images/06.PNG" />
+					<span>清除缓存</span>
+					<a>
+						<p style="float: right; margin-right: 30px;margin-top: -5px;">0MB</p>
+						<img style="float: right;position: absolute;margin-right: 5px;" src="../../images/youjiantou.png" />
+					</a>
+				</div>-->
+
+				<div class="box-a" id="upadd">
+					<img src="../../images/07.PNG" />
+					<span>检查更新</span>
+					<a>
+						<p id="updata" style="float: inherit; margin-right: 30px;margin-top: -3px;"></p>
+						<img style="float: right;position: absolute;margin-right: 5px;" src="../../images/youjiantou.png" />
+					</a>
+				</div>
+				<div class="box-a" id="about">
+					<img src="../../images/08.PNG" />
+					<span>关于我们</span>
+					<a>
+						<img src="../../images/youjiantou.png" />
+					</a>
+				</div>
+				<!--<div class="box-a">
+					<img src="../../images/09.PNG" />
+					<span>意见反馈</span>
+					<a>
+						<img id="feedback" src="../../images/youjiantou.png" />
+					</a>
+				</div>-->
+				<div style="border-top: 15px solid #eeeeee;text-align: center;">
+					<button id="exit" style="width: 70%;background-color: #ff176b;border-radius: 10px;">
+					 	 <a style="color: #FFFFFF; font-size: 13px;">退出登录</a>
+					 </button>
+
+				</div>
+
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script type="text/javascript">
+			var wid,
+				sen;
+
+			mui.init();
+
+			/*document.addEventListener('updateData', function() {
+				if(himall.isLogin()) {
+					safelogin();
+				}
+
+			});
+			safelogin = function() {
+
+				document.getElementById('login').style.display = 'none';
+				document.getElementsByClassName('exit-box')[0].style.display = 'block';
+			}*/
+
+			function plusReady() {
+				var sid = plus.webview.currentWebview();
+				sen = sid.orderStatus;
+				goback();
+				document.getElementById('updata').innerText = plus.runtime.version;
+
+			}
+			if(window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener("plusready", plusReady, false);
+			};
+			//退出操作
+			function backUser() {
+				mui.ajax(URL + 'api/Login/PostLogout', {
+					dataType: 'json',
+					contentType: 'application/json',
+					type: 'POST',
+					timeout: 10000,
+					success: function(data) {
+						if(data.Success == "true") {
+							himall.setState({});
+							showLogin({},'../');
+							goback();						
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						plus.nativeUI.toast('退出登录失败，请检查网络')
+					}
+				});
+			}
+
+			function goback() {
+				var old_back = mui.back;
+				mui.back = function() {
+					mui.fire(plus.webview.getWebviewById('user/usercenter.html'), 'updateData');
+					old_back()
+				}
+			}
+			document.getElementById('upadd').addEventListener('tap', function() {
+				mui.ajax(URL + 'api/home/GetUpdateApp', {
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						if(himall.ios()) {
+							if(data.IOSVersion > plus.runtime.version) {
+								if(data.IOSFlag == '1') {
+									plus.nativeUI.confirm('发现新版本' + AppName + '，马上体验吧！', function(event) {
+										if(0 == event.index) {
+											plus.runtime.openURL(data.IOSDownLoad);
+										}
+									}, '', ["立即更新", "取 消"]);
+								} else if(data.IOSFlag == '2') {
+									plus.nativeUI.confirm('发现新版本' + AppName + '，马上体验吧！', function(event) {
+										if(0 == event.index) {
+											plus.runtime.openURL(data.IOSDownLoad);
+										}
+										if(1 == event.index) {
+											plus.runtime.quit();
+										}
+									}, '', ["立即更新", "取 消"]);
+
+								}
+
+							} else {
+								alert('当前App已是最新版本');
+							}
+
+						} else {
+							if(data.AndroidVersion > plus.runtime.version) {
+								if(data.AndroidFlag == '1') {
+									plus.nativeUI.confirm('发现新版本' + AppName + '，马上体验吧！', function(event) {
+										if(0 == event.index) {
+											plus.runtime.openURL(data.AndriodDownLoad);
+										}
+									}, '', ["立即更新", "取 消"]);
+								} else if(data.AndroidFlag == '2') {
+									plus.nativeUI.confirm('发现新版本' + AppName + '，请立即更新！', function(event) {
+										if(0 == event.index) {
+											plus.runtime.openURL(data.AndriodDownLoad);
+										}
+										if(1 == event.index) {
+											plus.runtime.quit();
+										}
+									}, '', ["立即更新", "取 消"]);
+
+								}
+
+							} else {
+								alert('当前App已是最新版本');
+							}
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+			});
+			document.getElementById('myProfile').addEventListener('tap', function() {
+				if(himall.isLogin()){
+					himall.openVW('myProfile.html');
+				}
+				
+			});
+			mui('#name').on('tap', '#changePassword', function() {
+				if(himall.isLogin()){
+					himall.openVW('../change-password.html');
+				}
+				
+			});
+			/*mui('#name').on('tap', '#tixian', function() {
+				if(himall.isLogin()){
+					himall.openVW('../withdraw.html', '', {
+					orderStatus: sen
+				});
+				}
+				
+			});*/
+			document.getElementById('about').addEventListener('tap', function() {
+				himall.openVW('../About_Us.html', '', {
+					wid: 3
+				});
+			});
+			document.getElementById('aboutt').addEventListener('tap', function() {
+				himall.openVW('../About_Us.html', '', {
+					wid: 2
+				});
+			});
+			document.getElementById("strategy").addEventListener('tap', function() {
+				himall.openVW('strategy.html');
+			});
+			document.getElementById('exit').addEventListener('tap', function() {
+
+				if(mui.os.ios) {
+					backUser();
+					return;
+				} else {
+					backUser();
+					return;
+				}
+				/*var btnArray = [{
+					title: "退出当前账号"
+				}, {
+					title: "直接关闭应用"
+				}];
+				plus.nativeUI.actionSheet({
+					cancel: "取消",
+					buttons: btnArray
+				}, function(event) {
+					var index = event.index;
+					switch(index) {
+						case 1:
+							backUser();
+							break;
+						case 2:
+							plus.runtime.quit();
+							break;
+					}
+				});*/
+			}, false);
+		</script>
+	</body>
+
+</html>

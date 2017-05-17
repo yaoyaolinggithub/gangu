@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no,email=no" />
+		<title>分红明细</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+
+		<style type="text/css">
+			.mui-list {
+				background-color: transparent;
+			}
+			
+			.mui-content-list {
+				background-color: #ffffff;
+			}
+			
+			.mui-content-list ul {
+				border-top: 2px solid #f2f2f2;
+				width: 100%;
+				padding: 3%;
+				background: #ffffff;
+			}
+			
+			.mui-content-list ul li {
+				display: inline;
+				/*font-size: large;*/
+			}
+			
+			.mui-content-list ul li a {
+				color: black;
+				font-weight: bold;
+			}
+			
+			.mui-title {
+				font-size: larger;
+				font-weight: bold;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav transparent-bg">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-title">分红明细</a>
+		</header>
+		<div id="pullrefresh" class="scroll-div mui-list">
+			<ul style="width: 100%; padding: 3%; background-color: #f2f2f2;">
+				<li>
+					<a id="hj" style="color: #f63e3e; font-weight: bold;font-size: 15px;">分红:&nbsp;&nbsp;&nbsp;0&nbsp;元</a>
+				</li>
+				<div id="fhList" class="mui-content-list"></div>
+			</ul>
+			
+		</div>
+		<script type="text/javascript" src="../../js/mui.min.js"></script>
+		<script src="../../js/delayimg.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var page = 1,
+				isnodata = false;
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					deceleration: 0.0006,
+					up: {
+						contentrefresh: "正在加载...",
+						contentnomore: '亲，我是有底线的',
+						callback: function() {
+							var self = this;
+							setTimeout(function() {
+								if(!isnodata) {
+									page++;
+									mui.ajax(URL + 'api/UserCenter/GetUsGgfhList?pageNo='+page+'&pageSize=10', {
+										dataType: 'json',
+										type: 'get',
+										timeout: 10000,
+										success: function(data) {
+											if(data.Success) {
+												var html = '';
+												document.getElementById('fhList').insertAdjacentHTML('beforeend', initData(html, data));
+												delayimg.render();
+												if(data.Total <= page * 10) {
+													isnodata = true;
+												}
+												self.endPullupToRefresh(isnodata);
+											}
+										},
+										error: function(xhr, type, errorThrown) {
+											plus.nativeUI.toast('请求失败，请检查网络')
+										}
+									});
+								} else {
+									self.endPullupToRefresh(isnodata);
+								}
+							}, 1500);
+						}
+
+					},
+					
+				}
+			});
+			
+			mui.plusReady(function() {
+				var ws = plus.webview.currentWebview();
+				orderStatus = ws.orderStatus;
+				document.getElementById('hj').innerHTML = "分红:"+'&nbsp;&nbsp;&nbsp;' + orderStatus +'&nbsp;'+ " 元";
+				mui.ajax(URL + 'api/UserCenter/GetUsGgfhList?pageNo=1&pageSize=10', {
+					dataType: 'json',
+					type: 'get',
+					success: function(data) {
+						if(data.Success) {
+							if(data.Data.length > 0) {
+								html = '';
+								document.getElementById('fhList').innerHTML = initData(html, data);
+								delayimg.init();
+								
+							} else {
+								html = '';
+								document.getElementById('fhList').innerHTML = '<div style="text-align: center;position: absolute;padding: 50% 20%  50% 45%;"><p>没有信息</p></div>';
+							}
+							if(data.Total <= 10) {
+								isnodata = true;
+							}
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						plus.nativeUI.toast('请检查网络')
+					}
+				});
+			});
+
+			function initData(html, data) {
+				for(var i = 0; i < data.Data.length; i++) {
+					html += '<ul>' +
+						'<li><a>' + data.Data[i].CreateTime + '</a><a style="float: right;">' + data.Data[i].Amount + '元</a></li>' +
+						'<li>' +
+						'<h6>今日分红结算</h6>' +
+						'</li>' +
+						'</ul>';
+				}
+				return html;
+			}
+		</script>
+	</body>
+
+</html>

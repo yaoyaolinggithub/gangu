@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no,email=no" />
+		<title>微店介绍</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css" rel="stylesheet" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">店铺介绍</h1>
+		</header>
+		
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js"></script>
+		<script>
+			mui.init({swipeBack: true});
+			
+			var vshopid;
+			
+			mui.plusReady(function() {
+				vshopid=plus.webview.currentWebview().vshopId;
+				var w=plus.nativeUI.showWaiting('',{padlock:true});
+				mui.ajax(URL+'api/VShop/GetVShopIntroduce/'+vshopid,{
+					dataType:'json',
+					type:'get',
+					timeout:10000,
+					success:function(data){
+						if(data.Success=='True'){
+							var html='';
+							html+='<div id="scrollDiv" class="scroll-div"><div class="mui-content transparent">'+
+								'<ul class="mui-table-view">'+
+									'<li class="mui-table-view-text" style="padding:5px 10px">'+
+										'<div class="vshop-head">'+
+											'<img src="'+data.VShop.Logo+'"/>'+
+											'<a>'+data.VShop.Name+'</a>';
+											if(data.VShop.IsFavorite)
+												html+='<i data-shopid="'+data.VShop.ShopId+'" class="addFavoriteShop iconfont icon-guanzhu red"></i>';
+											else
+												html+='<i data-shopid="'+data.VShop.ShopId+'" class="addFavoriteShop iconfont icon-guanzhu"></i>';
+										html+='</div>'+
+									'</li>'+
+								'</ul>'+
+								'<ul class="mui-table-view mt10">'+
+									'<li class="mui-table-view-text">'+
+										'<div class="vshop-score">'+
+											'<p>'+
+												'<span>店铺：<em>'+data.VShop.ProductAndDescription.toFixed(2)+'</em></span>'+
+												'<span>发货：<em>'+data.VShop.SellerDeliverySpeed.toFixed(2)+'</em></span>'+
+												'<span>服务：<em>'+data.VShop.SellerServiceAttitude.toFixed(2)+'</em></span>'+
+											'</p>'+
+										'</div>'+
+									'</li>'+
+								'</ul>'+
+								'<ul class="mui-table-view mt10">'+
+									'<li class="mui-table-view-text">'+
+										'<div class="vshop-intro">'+
+											'店铺二维码： <img src="'+data.VShop.QRCode+'"/>'+
+										'</div>'+
+									'</li>'+
+								'</ul>'+
+							'</div></div>';
+							document.body.insertAdjacentHTML('beforeend',html);
+				            w.close();
+				            document.getElementsByClassName("mui-content")[0].className="mui-content";
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						w.close();
+						reloadWvLoad();
+					}
+				});
+				
+			});
+			
+			mui('body').on('tap', '.addFavoriteShop', function() {
+				var _this=this;
+				if(himall.isLogin()){
+					var w=plus.nativeUI.showWaiting('',{padlock:true});
+					var shopid=_this.getAttribute('data-shopid');
+					mui.ajax(URL+'api/VShop/PostAddFavoriteShop',{
+						data:JSON.stringify({shopId:shopid}),
+						dataType:'json',
+						contentType:'application/json',
+						type:'POST',
+						timeout:10000,
+						success:function(data){
+							w.close();
+							if(data.Success=="true"){
+								plus.nativeUI.toast(data.Msg);
+								if(_this.className.indexOf('red')>=0)
+									_this.className=_this.className.replace(' red','');
+								else
+									_this.className+=' red';
+							}else{
+								plus.nativeUI.toast('关注店铺失败');
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							w.close();
+							plus.nativeUI.toast('关注失败，请检查网络')
+						}
+					});
+				}else{
+					showLogin({},'/');
+				}
+				
+			});
+			
+		</script>
+	</body>
+
+</html>

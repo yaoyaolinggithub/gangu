@@ -1,0 +1,77 @@
+
+
+
+.toutiao {
+	padding: 0px 10px;
+	background: #fff;
+	overflow: hidden;
+	border-bottom: 1px solid #d3d3d3;
+}
+
+.toutiao .mui-table-view:after {
+	height: 0;
+	border-top: 0
+}
+
+.toutiao .innerbox {
+	margin-top: -10px;
+	display: flex;
+	display: -webkit-box;
+	display: -webkit-flex;
+	padding: 0px 10px 5px 10px;
+	white-space: nowrap
+}
+
+.toutiao .innerbox>.img-container {
+	padding-right: 23px;
+	height: 30px;
+	margin-top: 3px;
+	position: relative
+}
+
+.toutiao .innerbox>.img-container:after {
+	content: "  ";
+	position: absolute;
+	right: 0;
+	top: -1px;
+	width: 1px;
+	height: 100%;
+	border-right: 1px solid #d3d3d3;
+	-webkit-transform: scaleX(.5);
+	transform: scaleX(.5)
+}
+
+.toutiao .innerbox>.img-container>.toutiao-img {
+	height: 30px
+}
+
+.innerbox>.mui-table-view:before,
+.innerbox>.mui-table-view:after,
+.innerbox>.mui-table-view>.mui-table-view-cell:after {
+	height: 0;
+	border-top: 0
+}
+
+.innerbox>ul {
+	width: 68%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding: 0;
+	height: 30px
+}
+
+.innerbox>ul>li {
+	margin: 0;
+	padding: 10px 0 0 10px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 14px;
+	background: #fff!important
+}
+
+.toutiao .innerbox .guangbo {
+	height: 15px;
+	width: 17px;
+}

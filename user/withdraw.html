@@ -1,0 +1,248 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<link rel="stylesheet" href="../css/account.css" />
+		<link rel="stylesheet" type="text/css" href="../css/main.css" />
+		<script src="../js/jquery-1.8.2.min.js" type="text/javascript" charset="utf-8"></script>
+		<style>
+			.box {
+				background: #d1d1d1;
+			}
+			
+			.box span {
+				line-height: 25px;
+				margin-left: 10px;
+				font-size: 12px;
+				padding: 0 10px;
+			}
+			
+			.mui-input-group {
+				margin-top: 0px;
+			}
+			
+			.mui-content-padded {
+				text-align: center;
+			}
+			
+			.with {
+				color: #fe4044;
+				font-size: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="goodcover" style="margin-top:-10"></div>
+		<div id="code">
+			<div class="close1">
+				<a id="closebt"><img style="width: 100%;" src="../images/0258.PNG"></a>
+			</div>
+			<div class="code-img"> <img id="ewmsrc" src="../images/money.gif"></div>
+		</div>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id="withdraw" class=" mui-icon mui-pull-right" style="font-size: 17px;margin-top: 5px;">明细</a>
+			<h1 class="mui-title">申请提现</h1>
+		</header>
+		<div class="mui-content">
+			<div class="box">
+				<span id="amountcout">账户余额0元,提现费率0%，会员最低提现金额1元，提现只能提现一元的整倍数</span>
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label>银行卡号</label>
+						<input id="openid" type="number" maxlength="19" class="mui-input-clear" placeholder="请输入银行卡号">
+					</div>
+					<div class="mui-input-row">
+						<label>开户行</label>
+						<input id="bankname" type="text" class="mui-input-clear" placeholder="格式：中国建设银行">
+					</div>
+					<div class="mui-input-row">
+						<label>持卡人</label>
+						<input id="nickname" type="text" class="mui-input-clear" placeholder="格式：王某某">
+					</div>
+					<div class="mui-input-row">
+						<label>提现金额</label>
+						<input type="number" placeholder="提现金额" id="amount" value="1" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}" />
+					</div>
+					<div class="mui-input-row">
+						<label>登陆密码</label>
+						<input id="sqpwd" type="password" class="mui-input-clear" placeholder="登陆密码">
+					</div>
+					<!--<div class="mui-input-row">
+					<label>验证码</label>
+					<input id='phoneCode' type="number" placeholder="输入验证码" class="mui-input input-half" ><a class="input-btn" id="getCode">获取验证码</a>-->
+				</form>
+			</div>
+
+		</div>
+		<div class="mui-content-padded">
+			<button id='reg' class="mui-btn  mui-btn-block" style="background: #eb0f66;color: #fff;border-radius: 10px;">提交</button>
+
+			<span class="with">温馨提示：亲，开户行地址填写不清楚，提现不到账哦。</span>
+		</div>
+		<!--</div>-->
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/jquery-1.8.2.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			var reg = document.getElementById('reg');
+			var withdraw = document.getElementById('withdraw');
+			var drawdata,
+				openid,
+				bankname,
+				nickname,
+				drawUrl,
+				sqpwd;
+			$(function() {
+
+				$('#ewmsrc').click(function() {
+					state = himall.getState();
+					loadShares({
+						title: '干股商城',
+						href: URL + 'm-Wap/Register?introducer=' + state.userId,
+						content: '干股商城是一个日常消费就送干股，每天分红的商城，现在注册就送5元。想分红就赶紧注册吧'
+					});
+
+				});
+
+				$('#closebt').click(function() {
+
+					$('#code').hide();
+					$('#goodcover').hide();
+				});
+				jQuery.fn.center = function(loaded) {
+					var obj = this;
+					obj.css({
+						'top': 10,
+						'left': 10,
+						'right': 10,
+						'bottom': 10
+					});
+				}
+			});
+			mui.plusReady(function() {
+
+				$('#code').center();
+				$('#goodcover').show();
+				$('#code').fadeIn();
+
+				withdraw.addEventListener('tap', function() {
+					himall.openVW('withdrawsub.html');
+				});
+				var a = plus.webview.currentWebview();
+				document.getElementById('amountcout').innerText = "账户余额" + a.orderStatus + "元提现费率0%，会员最低提现金额1元，提现只能提现一元的整倍数"
+				document.getElementById('openid').value = localStorage.getItem('openid');
+				document.getElementById('bankname').value = localStorage.getItem('bankname');
+				document.getElementById('nickname').value = localStorage.getItem('nickname');
+				//				$('#reg').bind('click', function() {
+				reg.addEventListener('tap', function() {
+					var k = document.getElementById('openid').value;
+					addDataToLocalStorage(k);
+					var h = document.getElementById('bankname').value;
+					addDataTo_kaihuhang(h);
+					var n = document.getElementById('nickname').value;
+					addDataTo_chikaren(n);
+					regBtn(a);
+
+				});
+
+			});
+
+			function addDataToLocalStorage(data) {
+				localStorage.setItem('openid', data);
+			}
+
+			function addDataTo_kaihuhang(data) {
+				localStorage.setItem('bankname', data);
+			}
+
+			function addDataTo_chikaren(data) {
+				localStorage.setItem('nickname', data);
+			}
+
+			function regBtn(a) {
+
+				var openid = document.getElementById('openid'),
+					bankname = document.getElementById('bankname'),
+					nickname = document.getElementById('nickname'),
+					amount = document.getElementById('amount'),
+					sqpwd = document.getElementById('sqpwd');
+				openid = openid.value;
+				bankname = bankname.value;
+				nickname = nickname.value;
+				amount = amount.value;
+				sqpwd = sqpwd.value;
+				if(openid.length < 16 && openid.length > 20 || openid.length == 0) {
+					plus.nativeUI.toast('格式错误：请输入正确银行卡号,不能为空');
+					return;
+				} else {
+					if(bankname.length == 0) {
+						plus.nativeUI.toast('格式错误：开户行不能为空');
+						return;
+					} else {
+						if(nickname.length == 0) {
+							plus.nativeUI.toast('格式错误:持卡人不能为空');
+							return;
+						} else {
+							if(parseFloat(amount) > parseFloat(a.orderStatus) || parseFloat(amount) == 0 || parseFloat(amount.length) == 0) {
+								plus.nativeUI.toast('金额不可以大于余额或小于1');
+								return;
+							} else {
+								if(parseFloat(amount) != parseInt(amount)) {
+									plus.nativeUI.toast('提现金额不能有小数。');
+									return;
+								} else {
+									tijiao(openid, bankname, nickname, amount, sqpwd);
+								}
+							}
+						}
+					}
+				}
+			}
+
+			function tijiao(openid, bankname, nickname, amount, sqpwd) {
+
+				drawUrl = 'api/Payment/SqWithDraw';
+				drawdata = {
+					openid: openid,
+					bankname: bankname,
+					nickname: nickname,
+					amount: amount,
+					sqpwd: sqpwd
+				}
+				mui.ajax(URL + drawUrl, {
+					data: JSON.stringify(drawdata),
+					dataType: 'json',
+					contentType: 'application/json',
+					type: 'POST',
+					timeout: 10000,
+					success: function(data) {
+
+						if(data.success == true) {
+							plus.nativeUI.toast(data.SuccessMsg);
+							himall.openVW('withdrawsub.html');
+						} else {
+							plus.nativeUI.toast(data.ErrorMsg);
+						}
+
+						document.getElementById('sqpwd').value = '';
+
+					},
+					error: function(xhr, type, errorThrown) {
+
+						plus.nativeUI.toast('提交订单失败，请检查网络');
+					}
+
+				});
+			}
+		</script>
+	</body>
+
+</html>

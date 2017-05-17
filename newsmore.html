@@ -1,0 +1,82 @@
+<!doctype html>
+<!--
+	作者：736164687@qq.com
+	时间：2017-03-19
+	描述：
+-->
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<style type="text/css">
+			.mui-content span hr {
+				border: none;
+			}
+			
+			.mui-content h3 {
+				color: red;
+			}
+			
+			.mui-content h3 hr {
+				border: none;
+				margin: 20px;
+			}
+			
+			.mui-content button {
+				margin: 20px;
+				background: #ff176b;
+				color: #fff;
+				border-radius: 10px;
+				height: 45px;
+				width: 50%;
+				margin-bottom: 30px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">消息详情</h1>
+		</header>
+		<div class="mui-content" style="text-align: center; ">
+
+			<h4 id="titleData" style="margin-top: 20px;"> </h4>
+			<h4 id="IdData" style="margin-top: 20px;"> </h4>
+			<div id="cData" style="margin: 20px;background: transparent;">
+			</div>
+
+		</div>
+
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/app.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				var a = plus.webview.currentWebview();
+				var cNew = a.sid;
+				mui.ajax(URL +'api/Articles/GetNews?cid=' + cNew, {
+					dataType: 'json',
+					type: 'get',
+					timeout: 10000,
+					success: function(data) {
+						if(data.Success == 'true') {
+							document.getElementById('titleData').innerHTML = data.Data[0].Title;
+							document.getElementById('IdData').innerHTML = data.Data[0].AddDate;
+							document.getElementById('cData').innerHTML = data.Data[0].Content;
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						plus.nativeUI.toast('请检查网络');
+					}
+				});
+			});
+
+		</script>
+	</body>
+
+</html>

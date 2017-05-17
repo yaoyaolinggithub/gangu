@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<meta name="format-detection" content="telephone=no,email=no" />
+		<title>首页</title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<link href="css/default.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<script src="js/jquery-1.8.2.min.js" type="text/javascript" charset="utf-8"></script>
+		<style>
+			.mui-bar-transparent {
+				background: rgba(236, 57, 113, 0);
+			}
+			
+			input::-webkit-input-placeholder {
+				color: #fff;
+			}
+			
+			#slide {
+				position: relative;
+				height: 30px;
+				width: 100%;
+				color: #FA8E93;
+				overflow: hidden;
+				line-height: 30px;
+			}
+			
+			#slide p {
+				height: 40px;
+				line-height: 40px;
+				overflow: hidden
+			}
+			
+			#slide span {
+				float: left;
+				margin-left: 10px;
+			}
+			
+			@-webkit-keyframes scrollText1 {
+				0% {
+					-webkit-transform: translateY(0px);
+				}
+				25% {
+					-webkit-transform: translateY(-30px);
+				}
+				50% {
+					-webkit-transform: translateY(-60px);
+				}
+				75% {
+					-webkit-transform: translateY(-90px);
+				}
+				100% {
+					-webkit-transform: translateY(-120px);
+				}
+			}
+			
+			@keyframes scrollText1 {
+				0% {
+					transform: translateY(0px);
+				}
+				25% {
+					transform: translateY(-30px);
+				}
+				50% {
+					transform: translateY(-60px);
+				}
+				75% {
+					transform: translateY(-90px);
+				}
+				100% {
+					transform: translateY(-120px);
+				}
+			}
+			
+			.border3 {
+				top: 0px;
+				-webkit-animation: scrollText1 8s infinite cubic-bezier(1, 0, 0.5, 0);
+				animation: scrollText1 8s infinite cubic-bezier(1, 0, 0.5, 0);
+			}
+			
+			.border3 div {
+				text-align: center;
+				height: 30px;
+			}
+			
+			.border3:hover {
+				animation-play-state: paused;
+				-webkit-animation-play-state: paused;
+			}
+			
+			.border3 div p {
+				font: large;
+			}
+			
+			.mui-scroll {
+				background: #f2f2f2;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div id="goodcover" style="margin-top:-10"></div>
+		<div id="code">
+			<div class="close1">
+				<a id="closebt"><img style="width: 100%;" src="images/0258.PNG"></a>
+			</div>
+			<div class="code-img"> <img id="ewmsrc" src="images/4-21-2.gif"></div>
+		</div>
+
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper transparent" style="margin-top: -1px;">
+			<div class="mui-scroll">
+				<div id="slider" class="mui-slider">
+					<div class="mui-slider-group mui-slider-loop" id="sliderImg">
+					</div>
+					<div class="mui-slider-indicator">
+					</div>
+					<div class="mui-pull-loading mui-spinner custom-loading"></div>
+				</div>
+				<div class="toutiao">
+					<div class="innerbox mui-table-view">
+						<div class="img-container" id="newslist">
+							<img style="padding: 0px 0px;" src="images/xiaogangu.PNG" class="toutiao-img" />
+						</div>
+						<!--<img src="images/guangbo.png" class="guangbo" />-->
+						<div id="slide">
+							<div style="text-align: center; ">
+								<div id="kkfn" class="border3">
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<ul class="fast-nav" id="cagegorybtn1">
+					<a id="partner"><img data-id="0" src="images/partner.png" /><span>合伙人区</span></a>
+					<li id="clothesShoes" data-id="4"><img src="images/clothes.png" /><span>服饰配饰</span></li>
+					<li id="mobile" data-id="2"><img src="images/phone.png" /><span>手机数码</span></li>
+					<li id="furnitureHome" data-id="6"><img src="images/Food.png" /><span>美食美酒</span></li>
+				</ul>
+				<ul class="fast-nav" id="cagegorybtn2">
+					<li id="digitalOffice" data-id="5"><img src="images/bag.png" /><span>鞋靴箱包</span></li>
+					<li id="generalMerchandise" data-id="3"><img src="images/life.png" /><span>生活用品</span></li>
+					<li id="homeAppliances" data-id="1"><img src="images/hounse.png" /><span>家用电器</span></li>
+					<li id="moreClassify" data-id="0"><img src="images/more.png" /><span>更多分类</span></li>
+				</ul>
+
+				<div class="twoicon" style="margin-top: 10px;">
+
+					<a style="">
+						<img id="001_ps" class="img_1" src="images/img1.png" />
+						<img id="002_ps" class="img_2" src="images/img2.png" />
+					</a>
+					<span class="tou">
+						<a href="">
+							<span class="spantye"></span>
+					<span>新品热卖</span>
+					<span class="spantye"></span>
+					</a>
+					</span>
+					<div class="box">
+						<div class="box-left">
+							<img data-id="10" id="003_ps" src="images/001.png">
+						</div>
+						<div class="box-right">
+							<div id="box-right1">
+								<img data-id="11" id="004_ps" src="images/002.png">
+							</div>
+							<div id="box-right2">
+								<img data-id="12" id="005_ps" src="images/003.png">
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div id="cagegory">
+					<span id="sss" style="width: 100%; height: 30px;text-align: center;line-height: 30px;">
+					<a href="">
+					<span style="height: 1px;width: 13%;background: #bcbcbc;margin: 5px 5px;margin-right: 10px;"></span>
+					<span>合伙人区</span>
+					<span style="height: 1px;width: 13%;background: #bcbcbc;margin: 5px 5px;margin-left: 10px;"></span>
+					</a>
+					</span>
+					<img data-id="0" id="006_ps" style="width: 100%; border-bottom: 4px solid #fff;border-top: 4px solid #fff;" src="images/hehuoren.jpg" />
+
+					<span id="sss" style="width: 100%; height: 30px;text-align: center;line-height: 30px;">
+						<a href="">
+							<span style="height: 1px;width: 13%;background: #bcbcbc;margin: 5px 5px;margin-right: 10px;"></span>
+					<span>手机数码</span>
+					<span style="height: 1px;width: 13%;background: #bcbcbc;margin: 5px 5px;margin-left: 10px;"></span>
+					</a>
+					</span>
+					<img data-id="2" id="007_ps" style="width: 100%; border-bottom: 4px solid #fff;border-top: 4px solid #fff;" src="images/SSSS.PNG" />
+
+					<span id="sss" style="width: 100%; height: 30px;text-align: center;line-height: 30px;">
+					<a href="">
+					<span style="height: 1px;width: 13%;background: #bcbcbc;margin: 5px 5px;margin-right: 10px;"></span>
+					<span>家用电器</span>
+					<span style="height: 1px;width: 13%;background: #bcbcbc;margin: 5px 5px;margin-left: 10px;"></span>
+					</a>
+					</span>
+
+					<img data-id="1" id="008_ps" style="width: 100%; border-bottom: 4px solid #fff;border-top: 4px solid #fff;" src="images/jiayongdianqi.jpg" />
+
+					<span id="sss" style="width: 100%; height: 30px;text-align: center;line-height: 30px;">
+					<a href="">
+					<span style="height: 1px;width: 13%;background: #bcbcbc;margin: 5px 5px;margin-right: 10px;"></span>
+					<span>时尚女装</span>
+					<span style="height: 1px;width: 13%;background: #bcbcbc;margin: 5px 5px;margin-left: 10px;"></span>
+					</a>
+					</span>
+
+					<img data-id="24" id="009_ps" style="width: 100%; border-bottom: 4px solid #fff;border-top: 4px solid #fff;" src="images/shishangnvzhuang.jpg" />
+
+					<span id="sss" style="width: 100%; height: 30px;text-align: center;line-height: 30px;">
+					<a href="">
+					<span style="height: 1px;width: 13%;background: #bcbcbc;margin: 5px 5px;margin-right: 10px;"></span>
+					<span>精品男装</span>
+					<span style="height: 1px;width: 13%;background: #bcbcbc;margin: 5px 5px;margin-left: 10px;"></span>
+					</a>
+					</span>
+					<img data-id="25" id="010_ps" style="width: 100%; border-bottom: 4px solid #fff;border-top: 4px solid #fff;" src="images/jingpinnanzhuang.jpg" />
+
+					<span id="sss" style="width: 100%; height: 30px;text-align: center;line-height: 30px;">
+					<a href="">
+					<span style="height: 1px;width: 13%;background: #bcbcbc;margin: 5px 5px;margin-right: 10px;"></span>
+					<span>美食专区</span>
+					<span style="height: 1px;width: 13%;background: #bcbcbc;margin: 5px 5px;margin-left: 10px;"></span>
+					</a>
+					</span>
+					<img data-id="6" id="011_ps" style="width: 100%; border-bottom: 4px solid #fff;border-top: 4px solid #fff;" src="images/meishizhuanqu.jpg" />
+				</div>
+				<span class="custom-title">
+					<a href=""  >
+					<span style="height: 1px;width: 13%;background: #bcbcbc;margin: 5px 5px;margin-right: 10px;"></span>
+				<span>猜你喜欢</span>
+				<span style="height: 1px;width: 13%;background: #bcbcbc;margin: 5px 5px;margin-left: 10px;"></span>
+				</a>
+				</span>
+				<ul class="mui-table-view mui-grid-view mui-clearfix index-product " id="productsList">
+				</ul>
+			</div>
+		</div>
+
+		<script src="js/mui.min.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/delayimg.min.js"></script>
+
+		<script>
+			var page = 1,
+				isnodata = false,
+				cdata,
+				loadPage;
+
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					deceleration: 0.0006,
+					up: {
+						contentrefresh: "正在加载...",
+						contentnomore: '已加载全部商品',
+						callback: function() {
+							var self = this;
+							setTimeout(function() {
+								if(!isnodata) {
+									page++;
+									mui.ajax(URL + 'api/home/Get?pageNo=' + page + '&pageSize=10', {
+										dataType: 'json',
+										type: 'get',
+										timeout: 10000,
+										success: function(data) {
+											if(data.Success == 'true') {
+												var html = '';
+												document.getElementById('productsList').insertAdjacentHTML('beforeend', initData(html, data));
+												delayimg.render();
+												if(data.TotalProduct <= page * 10) {
+													isnodata = true;
+												}
+												self.endPullupToRefresh(isnodata);
+											}
+										},
+										error: function(xhr, type, errorThrown) {
+											plus.nativeUI.toast('请求失败，请检查网络')
+										}
+									});
+								} else {
+									self.endPullupToRefresh(isnodata);
+								}
+							}, 1500);
+						}
+
+					},
+					down: {
+						contentdown: "下拉可以刷新",
+						contentover: "释放立即刷新",
+						contentrefresh: "正在刷新...",
+						callback: function() {
+							setTimeout(function() {
+								page = 1;
+								isnodata = false;
+								loadPage();
+								mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+								mui('#pullrefresh').pullRefresh().refresh(true);
+
+							}, 300)
+						}
+					}
+				}
+			});
+
+			function getUserData() {
+				state = himall.getState();
+				userId = state.userId;
+				mui.ajax(URL + 'api/UserCenter/GetUser/' + userId, {
+					dataType: 'json',
+					type: 'get',
+					timeout: 10000,
+					success: function(data) {
+						if(data.Success == 'true') {
+							if(data.Totalggfh == 0) {
+								setTimeout(function() {
+									$('#code').center();
+									$('#goodcover').show();
+									$('#code').fadeIn();
+									var wvB = plus.webview.currentWebview(); //获取当前窗口的WebviewObject对象，即B  
+									var wvA = wvB.opener();
+									wvA.evalJS("showAG1('mui-active');");
+								}, 100);
+
+							}
+						} else {
+							plus.nativeUI.toast('重新打开');
+						}
+
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+
+				});
+
+			}
+
+			
+
+			var slider = document.getElementById('sliderImg'),
+				topicbox = document.getElementById('indexTopic'),
+				twoicon = document.getElementsByClassName('twoicon')[0],
+				cagegory = document.getElementById('cagegory'),
+				loadArr = document.getElementsByClassName('custom-loading');
+			slider.style.height = slider.offsetWidth / 2 + 'px';
+			//			topicbox.style.height = topicbox.offsetWidth * 0.62 + 'px';
+			setTimeout(function() {
+				for(var i = loadArr.length - 1; i >= 0; i--) {
+					loadArr[i].parentNode.removeChild(loadArr[i]);
+				}
+			}, 5000);
+
+			if(mui.os.android)
+				document.getElementsByClassName('mui-scroll')[0].className = '';
+
+			mui.plusReady(function() {
+
+				if(!himall.isLogin()) {
+					setTimeout(function() {
+						$('#code').center();
+						$('#goodcover').show();
+						$('#code').fadeIn();
+						var wvB = plus.webview.currentWebview(); //获取当前窗口的WebviewObject对象，即B  
+						var wvA = wvB.opener();
+						wvA.evalJS("showAG1('mui-active');");
+					}, 100);
+				} else {
+					getUserData();
+				}
+
+				loadPage = function() {
+					mui.ajax(URL + 'api/home/Get?pageNo=1&pageSize=10', {
+						dataType: 'json',
+						type: 'get',
+						success: function(data) {
+							if(data.Success == 'true') {
+								var imgLen = data.Slide.length;
+								if(imgLen > 1) {
+									//轮播图
+									var outputimg = "";
+									var outputright = "";
+									outputimg += '<div class="mui-slider-item mui-slider-item-duplicate"><a class="c-href" data-href="' + data.Slide[imgLen - 1].Url + '"><img src="' + data.Slide[imgLen - 1].ImageUrl + '" /></a></div>';
+									for(var i = 0; i < imgLen; i++) {
+										outputimg += '<div class="mui-slider-item"><a class="c-href" data-href="' + data.Slide[i].Url + '"><img src="' + data.Slide[i].ImageUrl + '" /></a></div>';
+										outputright += '<div class="mui-indicator' + (i == 0 ? ' mui-active' : '') + '"></div>';
+									}
+									outputimg += '<div class="mui-slider-item mui-slider-item-duplicate"><a class="c-href" data-href="' + data.Slide[0].Url + '"><img src="' + data.Slide[0].ImageUrl + '"  /></a></div>';
+									slider.innerHTML = outputimg;
+									document.getElementsByClassName('mui-slider-indicator')[0].innerHTML = outputright;
+									mui('#slider').slider({
+										interval: 5000
+									});
+								} else if(imgLen == 1) {
+									slider.innerHTML = '<div class="mui-slider-item"><a class="c-href" data-href="' + data.Slide[0].Url + '"><img src="' + data.Slide[0].ImageUrl + '" style="width:100%" /></a></div>';
+									mui('#slider').slider();
+								} else {
+									document.getElementById('slider').style.display = 'none';
+								}
+								
+								document.getElementById('001_ps').src = data.Topic[0].ImageUrl;
+								document.getElementById('002_ps').src = data.Topic[1].ImageUrl;
+								document.getElementById('003_ps').src = data.Topic[2].ImageUrl;
+								document.getElementById('004_ps').src = data.Topic[3].ImageUrl;
+								document.getElementById('005_ps').src = data.Topic[4].ImageUrl;
+								document.getElementById('006_ps').src = data.Topic[5].ImageUrl;
+								document.getElementById('007_ps').src = data.Topic[6].ImageUrl;
+								document.getElementById('008_ps').src = data.Topic[7].ImageUrl;
+								document.getElementById('009_ps').src = data.Topic[8].ImageUrl;
+								document.getElementById('010_ps').src = data.Topic[9].ImageUrl;
+								document.getElementById('011_ps').src = data.Topic[10].ImageUrl;
+
+								//第一页商品
+								if(data.TotalProduct <= 10) {
+									isnodata = true;
+								}
+								if(data.Product.length > 0) {
+//									
+									var html = '';
+									document.getElementById('productsList').innerHTML = initData(html, data);
+									//图片延迟加载初始化
+									delayimg.init();
+								}
+								window.scrollTo(0, 0)
+								plus.navigator.closeSplashscreen();
+								document.getElementById('pullrefresh').className = 'mui-content mui-scroll-wrapper';
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							plus.navigator.closeSplashscreen();
+							var errorText = '<div class="empty-show"><h4>网络不给力，请检查网络！</h4><button id="reloadWv" class="mui-btn mui-btn-negative">重新加载</button></div>'
+							document.getElementById('pullrefresh').innerHTML = errorText;
+							document.getElementById('pullrefresh').className = 'mui-content mui-scroll-wrapper';
+						}
+					});
+					mui.ajax(URL +'api/Articles/GetTitleList?topnum=4&cid=0&ctype=2', {
+						dataType: 'json', //服务器返回json格式数据
+						type: 'get', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							if(data.Success == 'true') {
+								
+								var html = "";
+								for(var i = 0; i < 5; i++) {
+									if(i == data.Data.length) {
+										
+										html += '<div star = "' + data.Data[0].Id + '" ><p >' + data.Data[0].Title + '</p></div>';
+									} else {
+										if(i > 0) {
+											html += '<div star = "' + data.Data[i].Id + '" ><p >' + data.Data[i].Title + '</p></div>';
+										}
+									}
+									document.getElementById("kkfn").innerHTML = html;
+								}
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+
+						}
+					});
+
+				}
+
+				loadPage();
+				//添加列表项的点击事件
+				mui('#productsList').on('tap', 'a', function(e) {
+					var id = this.getAttribute('data-id');
+					showProduct(id);
+				});
+
+			});
+			mui('#kkfn').on('tap', 'div', function() {
+				var id = this.getAttribute('star');
+				himall.openVW('toutiao.html','', {sid: id});
+				
+			});
+			$(function() {
+				$('#ewmsrc').click(function() {
+					if(himall.isLogin()) {
+						himall.openVW('user/bill/jifenjuan.html')
+					} else {
+						showLogin({
+							id: 'user/bill/jifenjuan.html',
+
+						}, '');
+					}
+					rtnAg();
+					$('#code').hide();
+					$('#goodcover').hide();
+					$("body").off("touchmove");
+				});
+				$('#closebt').click(function() {
+					$('body').unbind('touchmove');
+					rtnAg();
+					$('#code').hide();
+					$('#goodcover').hide();
+				});
+				jQuery.fn.center = function(loaded) {
+					$("body").on("touchmove", function(event) {
+						event.preventDefault;
+					}, false)
+					var obj = this;
+					obj.css({
+						'top': 0,
+						'left': 20,
+						'right': 20,
+						'bottom': 0
+					});
+				}
+			})
+
+			function initData(html, data) {
+				for(var i = 0; i < data.Product.length; i++) {
+					html += '<li class="mui-table-view-cell mui-media mui-col-xs-6">' +
+						'<div class="index-product-box">';
+					if(data.Product[i].Discount > 0 && data.Product[i].Discount < 1)
+						html += '<i>' + data.Product[i].Discount * 10 + '折</i>';
+					html += '<a data-id="' + data.Product[i].Id + '">' +
+						'<div class="p-img"><b data-delay-background="' + data.Product[i].ImageUrl + '"></b></div>' +
+						'<div class="mui-media-body">' + data.Product[i].Name + '</div>' +
+						//						'<p class="index-product-price"><a>¥ ' + data.Product[i].SalePrice + '</a><span>送:' + data.Product[i].Spoints + '积分</span></p>' +
+						'<p><a style="float: left;  font-size: small;">¥' + data.Product[i].SalePrice + '</a><a style="float: right;color:red;font-size: smaller;">' + data.Product[i].Spoints + '积分</a></p>' +
+						'</a>' +
+						'</div>' +
+						'</li>';
+				}
+				return html;
+			}
+
+			mui('.mui-content').on('tap', '.c-href', function() {
+				var href = this.getAttribute('data-href').toLowerCase(),
+					id;
+				if(href.indexOf('product/detail/') >= 0) {
+					id = href.split('product/detail/')[1];
+					showProduct(id);
+				} else if(href.indexOf('topic/detail/') >= 0) {
+					id = href.split('topic/detail/')[1];
+					himall.openVW('topic-detail.html', '', {
+						topicId: id
+					})
+				} else {
+					plus.runtime.openURL(href)
+				}
+			});
+			mui('#cagegorybtn1').on('tap', 'li', function() {
+				var id = this.getAttribute('data-id');
+				if(id == 0) {
+					himall.openVW('categorybtn.html', '', {
+						cbd: id
+					});
+				} else {
+					himall.openVW('categorybtn2.html', '', {
+						cbd: id
+					});
+				}
+
+			});
+			mui('#cagegorybtn2').on('tap', 'li', function() {
+				var id = this.getAttribute('data-id');
+				if(id == 0) {
+					himall.openVW('categorybtn.html', '', {
+						cbd: id
+					});
+				} else {
+					himall.openVW('categorybtn2.html', '', {
+						cbd: id
+					});
+				}
+			});
+
+			//分类明细指定
+			mui(".box-left").on('tap', 'img', function() {
+				var id = this.getAttribute('data-id');
+				himall.openVW('today_sub.html', '', {
+					cbd: 1,orderType:1
+				});
+			});
+			mui("#box-right1").on('tap', 'img', function() {
+				var id = this.getAttribute('data-id');
+				himall.openVW('today_sub.html', '', {
+					cbd: 2,orderType:2
+				});
+			});
+
+			mui("#box-right2").on('tap', 'img', function() {
+				var id = this.getAttribute('data-id');
+				himall.openVW('today_sub.html', '', {
+					cbd: 4,orderType:4
+				});
+			});
+			document.getElementById('007_ps').addEventListener('tap', function() {
+				var id = this.getAttribute('data-id');
+				himall.openVW('categorybtn2.html', '', {
+					cbd: id
+				});
+			});
+			document.getElementById('008_ps').addEventListener('tap', function() {
+				var id = this.getAttribute('data-id');
+				himall.openVW('categorybtn2.html', '', {
+					cbd: id
+				});
+			});
+			document.getElementById('009_ps').addEventListener('tap', function() {
+				var id = this.getAttribute('data-id');
+				himall.openVW('categorybtn2.html', '', {
+					cbd: id
+				});
+			});
+			document.getElementById('010_ps').addEventListener('tap', function() {
+				var id = this.getAttribute('data-id');
+				himall.openVW('categorybtn2.html', '', {
+					cbd: id
+				});
+			});
+			document.getElementById('011_ps').addEventListener('tap', function() {
+				var id = this.getAttribute('data-id');
+				himall.openVW('categorybtn2.html', '', {
+					cbd: id
+				});
+			});
+
+			function rtnAg() {
+				var wvB = plus.webview.currentWebview(); //获取当前窗口的WebviewObject对象，即B  
+				var wvA = wvB.opener(); //获取当前窗口的创建者，即A  
+				wvA.evalJS("showAG('mui-active');"); //执行父窗口中的方法  A中的showAG方法  
+				//				wvB.close(); //关闭B  
+			}
+
+			document.getElementById('006_ps').addEventListener('tap', function() {
+				//				himall.openVW('divisionhhr.html');
+				var id = this.getAttribute('data-id');
+				himall.openVW('categorybtn2.html', '', {
+					cbd: id
+				});
+			});
+			document.getElementById('partner').addEventListener('tap', function() {
+				//				himall.openVW('divisionhhr.html');
+				var id = this.getAttribute('data-id');
+				himall.openVW('categorybtn2.html', '', {
+					cbd: id
+				});
+			});
+			//限时购
+			document.getElementById('001_ps').addEventListener('tap', function() {
+				himall.openVW('limitbuy-list.html');
+			});
+			//团购
+			document.getElementById('002_ps').addEventListener('tap', function() {
+				himall.openVW('marketing/merge-list.html');
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no,email=no" />
+		<title>新增地址</title>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+		<link href="../../css/mui.picker.css" rel="stylesheet" />
+		<link href="../../css/mui.poppicker.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/mui.listpicker.css" />
+		<style>
+			.transparent-bg {
+				background: #ff176b;
+			}
+			
+			.transparent-bg a {
+				color: #fff;
+			}
+			
+			.addr-k {
+				background: white;
+				text-align: center;
+				padding: 3px 10px;
+			}
+			
+			.addr-k a {
+				float: left;
+				padding: 10px 0;
+				color: #373C3F;
+			}
+			
+			.box-a {
+				height: 50px;
+				/*background: #dcdcdc;*/
+				background: #FFFFFF;
+				line-height: 45px;
+				overflow: hidden;
+			}
+			
+			.box-a a {
+				float: right;
+				width: 10%;
+				padding: 15px 0;
+				color: #373c3f;
+			}
+			
+			.box-a a img {
+				float: left;
+				position: absolute;
+				width: 10px;
+				height: 20px;
+			}
+			
+			.box-a a p {
+				position: absolute;
+				right: 10px;
+			}
+			
+			.box-a span {
+				left: 10px;
+				position: absolute;
+			}
+			/*.box-a a{
+				float: left;
+				padding: 10px 0;
+			}*/
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-navs transparent-bg">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a style="text-align: left;width:90%;margin: 11px 0 10px 0;position: absolute; font-size: large;">&nbsp;新增地址</a>
+			<a id="save" style="text-align: right;width:85%;margin: 10px 0 10px 0;position: absolute; font-size: large;">保存</a>
+		</header>
+		<div class="scroll-div">
+			<div id="" style="background: white;">
+				<div id="" class="addr-k">
+					<div id="">
+						<a href="" style="color: #373C3F; ">收获人</a>
+					</div>
+					<div id="">
+						<input type="text" name="" id="" value="" style="width: 80%; border: 0;" />
+					</div>
+
+				</div>
+				<div id="" style="border-bottom: 1px solid #EEEEEE;"></div>
+				<div id="" class="addr-k">
+					<div id="">
+						<a href="">联系电话</a>
+					</div>
+
+					<div id="">
+						<input type="text" name="" id="" value="" style="width: 80%;border: 0;" />
+					</div>
+
+				</div>
+				<div id="" style="border-bottom: 1px solid #EEEEEE;"></div>
+				<div id="" class="addr-k">
+
+					<div class="box-a">
+						<span  style="color: #373C3F; ">所在地区</span>
+						<a id="areaSelect">
+							<p id="userAddr" style="  margin-right: 30px;margin-top: -12px;">请选择</p>
+							<img src="../../images/youjiantou.png" />
+						</a>
+					</div>
+
+				</div>
+
+				<div id="" style="border-bottom: 1px solid #EEEEEE;"></div>
+				<div id="" class="addr-k">
+					<div class="box-a">
+						<span style="color: #373C3F; ">街道</span>
+						<a>
+							<p style="  margin-right: 30px;margin-top: -12px;">请选择</p>
+							<img src="../../images/youjiantou.png" />
+						</a>
+					</div>
+				</div>
+					 <div id="" class="addr-k">
+					<div id="" style="border-bottom: 1px solid #EEEEEE;"></div>
+					<div id="" style="">
+						<textarea id='question' style="border: 0px solid red;padding: 3px 3px; " class="mui-input-clear question" placeholder="详细地址"></textarea>
+					</div>
+				</div>
+
+				<div id="" style="padding: 3px 10px;">
+					<input type="checkbox" name="" id="" value="" style="float: right; " />
+					<a style="color: #373C3F; ">设为默认地址</a>
+				</div>
+			</div>
+		</div>
+		 
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/app.js" ></script>
+		<script src="../../js/mui.picker.js"></script>
+		<script src="../../js/mui.poppicker.js"></script>
+		<script src="../../js/city.data.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="../../js/mui.listpicker.js" ></script>
+
+		<script type="text/javascript">
+			
+			mui.init();
+			var cityPicker = new mui.PopPicker({
+						layer: 2
+					});
+					cityPicker.setData(cityData);
+			var showCityPickerButton =document.getElementById('areaSelect');
+			var cityResult = document.getElementById('userAddr');
+			
+			showCityPickerButton.addEventListener('tap', function(event) {
+						cityPicker.show(function(items) {
+							cityResult.innerText = items[0].text + " " + items[1].text;
+						});
+					}, false);
+			
+		</script>
+	</body>
+
+</html>

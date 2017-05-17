@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>个人中心</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css" rel="stylesheet" />
+
+		<style>
+			.mui-bar-box {
+				background-color: #ed3972;
+				color: #fff;
+				box-shadow: none;
+				height: 45px;
+				margin-top: -45px;
+			}
+			
+			.mui-page .mui-table-view:first-child {
+				margin-top: 15px;
+			}
+			
+			.mui-page .mui-table-view:last-child {
+				margin-bottom: 30px;
+			}
+			
+			.mui-table-view {
+				margin-top: 10px;
+				border-bottom: 0px solid #ebebeb;
+			}
+			
+			.table-view-combine:after {
+				height: 0;
+			}
+			
+			.mui-table-view span.mui-pull-right {
+				color: #999;
+			}
+			
+			.mui-grid-view.mui-grid-9 {
+				background-color: #fff;
+				margin: 0;
+			}
+			
+			.mui-grid-view.mui-grid-9:after {
+				position: absolute;
+				display: block;
+			}
+			
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell {
+				padding: 0;
+				border: 0;
+			}
+			
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell .mui-badge,
+			.mui-table-view-chevron .mui-badge {
+				display: block;
+			}
+			
+			.mui-grid-view.mui-grid-9 .mui-media .mui-icon {
+				font-size: 24px;
+				color: #666;
+				-webkit-text-stroke-width: 0.3px;
+			}
+			
+			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {
+				font-size: 12px;
+			}
+			
+			.mui-media.mui-col-xs-3 {
+				width: 20%;
+			}
+			
+			.mui-table-view .iconfont {
+				font-size: 20px;
+				-webkit-text-stroke-width: 0.3px;
+			}
+			
+			.table-view-iconlist .iconfont {
+				margin-right: 5px;
+			}
+			
+			.icon-top .iconfont {
+				position: relative;
+				top: 2px;
+			}
+			
+			.user-info {
+				padding: 1px 0 12px;
+				background: #ed3972;
+				color: #fff;
+				text-align: center;
+				margin-top: -1px;
+				height: 160px;
+			}
+			
+			.user-info img {
+				margin-top: 15px;
+				height: 70px;
+				width: 70px;
+				display: inline;
+				border-radius: 100%;
+			}
+			
+			.user-info h3 {
+				font-size: 16px;
+				margin: 0px 0;
+				position: relative;
+				z-index: 3;
+				line-height: 22px;
+			}
+			
+			.user-info ul {
+				position: relative;
+				z-index: 2;
+				background: #e62167;
+				margin: 0px 0 0 0;
+			}
+			
+			.user-info ul li {
+				margin-top: 0px;
+				list-style: none;
+				width: 20%;
+				float: left;
+			}
+			
+			.user-info ul li:first-child {
+				padding: 0px 5px 0px;
+				position: relative;
+			}
+			
+			.user-info ul li:first-child:after {
+				content: '';
+				position: absolute;
+				right: 0;
+				height: 20px;
+				/*border-left: 1px solid #fff; bottom: 0;*/
+			}
+			
+			.user-info ul li strong {
+				font-size: 18px;
+				font-weight: normal;
+				
+			}
+			
+			.user-info ul li p {
+				color: #fff;
+				margin: 0;
+				font-size: 13px;
+			}
+			
+			.scroll-div {
+				top: 173px;
+			}
+			
+			.mui-icon {
+				font-size: 15px!important;
+			}
+			
+			.box {
+				margin: 0 5px 5px 0px;
+				float: left;
+				width: 100%;
+				height: auto;
+				background: #fff;
+			}
+			
+			.box-a {
+				text-align: center;
+				display: inline;
+				line-height: 10px;
+				padding: 10px 10px 10px;
+				float: left;
+				width: 25%;
+				height: 20%;
+				border-color: #ededed;
+				border: 1px solid #ebebeb;
+				-webkit-tap-highlight-color: rgba(255, 255, 255, 0)
+			}
+			
+			.box-a span img {
+				width: 50%;
+				height: 50%;
+			}
+			
+			.box-a p {
+				margin: 10px 0 0 0;
+				font-size: 13px;
+			}
+
+		</style>
+	</head>
+
+	<body>
+
+		<!--<header class="mui-bar mui-bar-box">
+			<a id="leftNabar" class="mui-icon mui-pull-left"><img class="img-icon" src="../images/xiaoxi.PNG" />
+				<p style="color: #fff; font-size: 11px;">消息</p>
+			</a>
+			<a id="pullright" class="mui-icon mui-pull-right"><img class="img-icon" src="../images/fenxiang.png" />
+				<p style="color: #fff; font-size: 11px;">分享</p>
+			</a>
+
+		</header>-->
+
+		<div class="mui-content" style="margin-top: 0px;">
+			<div class="user-info">
+				<img id="userPhoto" src="../images/default-photo.png" />
+				<h3 id="account">请登录</h3>
+				<span id="rank" style=" background: transparent;border-radius: 30px;height: 15px;width: 50px;font-size: 8px;line-height: 15px;color: black;"></span>
+				<!--<img style="width: 50px;height: 15px;margin-top: 1px;" src="../images/50-15.PNG"/>-->
+				<!--<ul class="mui-clearfix">
+					<li id="showFavProduct">
+						<strong id="FavoriteProduct">0</strong>
+						<p>商品收藏</p>
+					</li>
+					<li id="showFavShop">
+						<strong id="FavoriteShop">0</strong>
+						<p>店铺收藏</p>
+					</li>
+				</ul>-->
+				<ul class="mui-clearfix">
+					<li>
+						<strong id="today">0</strong>
+						<p>今日收益</p>
+					</li>
+					<li>
+						<strong id="integral">0</strong>
+						<p>积分</p>
+					</li>
+					<li>
+						<strong id="balance">0</strong>
+						<p>余额</p>
+					</li>
+					<li>
+						<strong id="performance">0</strong>
+						<p>干股</p>
+
+					</li>
+					<li>
+						<strong id="accumulative">0</strong>
+						<p>累计收益</p>
+					</li>
+				</ul>
+			</div>
+			<div id="scrollDiv" class="scroll-div">
+				<ul class="mui-table-view mui-table-view-chevron table-view-combine">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right" onclick="showOrderList(0)">
+							<span class="view-more-text">查看全部订单</span>我的订单
+						</a>
+					</li>
+				</ul>
+				<ul class="mui-table-view mui-grid-view mui-grid-9">
+					<li class="mui-table-view-cell mui-media mui-col-xs-3" onclick="showOrderList(1)">
+						<a>
+							<span class="mui-icon iconfont icon-daifukuan"><span class="mui-badge" id="WaitingForPay"></span></span>
+							<div class="mui-media-body">待付款</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-3" onclick="showOrderList(2)">
+						<a>
+							<span class="mui-icon iconfont icon-daifahuo01"><span class="mui-badge" id="WaitingForDelivery"></span></span>
+							<div class="mui-media-body">待发货</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-3" onclick="showOrderList(3)">
+						<a>
+							<span class="mui-icon iconfont icon-shouhuo"><span class="mui-badge" id="WaitingForRecieve"></span></span>
+							<div class="mui-media-body">待收货</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-3" onclick="showOrderList(5)">
+						<a>
+							<span class="mui-icon iconfont icon-daipingjia"><span class="mui-badge" id="WaitingForComments"></span></span>
+							<div class="mui-media-body">待评价</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-3" id="refundList">
+						<a>
+							<span class="mui-icon iconfont icon-refund"><span class="mui-badge" id="RefundOrders"></span></span>
+							<div class="mui-media-body">售后/退款</div>
+						</a>
+					</li>
+				</ul>
+
+				
+				<ul class="mui-table-view mui-table-view-chevron table-view-combine" style="margin-top: 3px;">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right" onclick="showOrder()">
+							<span class="view-more-text">我要提现</span>申请提现
+						</a>
+					</li>
+
+				</ul>
+				<div class="box">
+					<div class="box-a">
+						<span id="ewm" class=""><img src="../images/ewm.png"/></span>
+						<p>二维码</p>
+					</div>
+					<div id="my-rm" class="box-a">
+						<span class=""><img src="../images/wdrm.png"/></span>
+						<p>我的人脉</p>
+					</div>
+					<div id="mybill" class="box-a">
+						<span class=""><img src="../images/wdzd.png"/></span>
+						<p>我的账单</p>
+					</div>
+					<div id="jifenjuan" class="box-a">
+						<span class=""><img src="../images/jfj.png"/></span>
+						<p>积分券</p>
+					</div>
+					<div id="showFavProduct" class="box-a">
+						<span class=""><img src="../images/wdsc.png"/></span>
+						<p>我的收藏</p>
+					</div>
+					<div id="myHistory" class="box-a">
+						<span class=""><img src="../images/wdzj.png"/></span>
+						<p>我的足迹</p>
+					</div>
+					<div id="myMergeTip" class="box-a">
+						<span class=""><img src="../images/wdpt.png"/></span>
+						<p id="wodpt">我的拼团</p>
+					</div>
+					<div id="more" class="box-a">
+						<span class=""><img src="../images/gd.png"/></span>
+						<p>个人中心</p>
+					</div>
+				</div>
+				<div style="line-height: 40px;background: #fff;">
+					<img style="float: left;margin-top: 7px;margin-left: 10px;width: 25px; height: 25px;" src="../images/kefu.PNG" /> &nbsp;&nbsp;客服中心：
+					<span style="margin-left: 10px;float: right;margin-right: 20px;margin-top: 5px;"><img style="width: 20px; height: 20px;" src="../images/youjiantou.png"/></span>
+					<a style="float: right;" href="tel:400-827-6369">400-827-6369</a>
+				</div>
+				<p style="width: 100%;background: #f0eff5;text-align: center;font-size: 13px;padding: 15px 10px;margin-bottom: 0px;">任何问题，立刻致电400-827-6369，有我们在您放心!</p>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/mui.js"></script>
+		<script src="../js/app.js"></script>
+		<script>
+			var state = {},
+				userId,
+				auths = null,
+				balable,
+				qbalable,
+				CellPhone;
+			var userPhoto = document.getElementById('userPhoto'),
+				rank = document.getElementById('rank'),
+				account = document.getElementById('account');
+			(function($, doc) {
+				$.init();
+				$.plusReady(function() {
+					
+
+						account.addEventListener('tap',function(){
+							if(himall.isLogin()) {
+							
+							} else {
+								showLogin({
+							}, '/');
+						}
+							
+						});
+						userPhoto.addEventListener('tap',function(){
+							if(himall.isLogin()) {
+							
+							} else {
+								showLogin({
+							}, '/');
+						}
+						});
+
+					doc.getElementById('ewm').addEventListener('tap', function() {
+						if(himall.isLogin()) {
+							himall.openVW('../ewm.html');
+						} else {
+							showLogin({
+								id: 'ewm.html'
+							}, '/');
+						}
+
+					});
+					doc.getElementById('more').addEventListener('tap', function() {
+						if(himall.isLogin()) {
+							himall.openVW('bill/more.html','',{orderStatus:balable});
+							
+						} else {
+							showLogin({
+								id: 'user/bill/more.html',
+								extras:{
+									orderStatus:balable
+								}
+							}, '/');
+						}
+					});
+
+					doc.getElementById('mybill').addEventListener('tap', function() {
+
+						if(himall.isLogin()) {
+							himall.openVW('mybil', '../mybil.html', {
+								orderStatus: Cdata
+							});
+						} else {
+							showLogin({
+								id: 'mybil.html',
+								extras: {
+									orderStatus: Cdata
+								}
+							}, '/');
+						}
+					});
+					doc.getElementById('jifenjuan').addEventListener('tap', function() {
+
+						if(himall.isLogin()) {
+							himall.openVW('bill/jifenjuan.html', '', {
+								orderStatus: qbalable
+							});
+
+						} else {
+							showLogin({
+								id: 'user/bill/jifenjuan.html',
+								extras: {
+									orderStatus: Cdata
+								}
+							}, '/');
+						}
+					});
+					doc.getElementById('my-rm').addEventListener('tap', function() {
+
+						if(himall.isLogin()) {
+							himall.openVW('bill/my-py-box.html');
+						} else {
+							showLogin({
+								id: 'user/bill/my-py-box.html',
+							}, '/');
+						}
+					});
+					doc.getElementById('showFavProduct').addEventListener('tap', function() {
+//						himall.openVW('my-favorite.html');
+						if(himall.isLogin()) {
+							himall.openVW('user-favproduct.html');
+						} else {
+							showLogin({
+								id: 'user-favproduct.html',
+							}, '/');
+						}
+					});
+					doc.getElementById('myHistory').addEventListener('tap', function() {
+						if(himall.isLogin()) {
+							himall.openVW('history.html');
+						} else {
+							showLogin({
+								id: 'history.html',
+
+							}, '/');
+						}
+					});
+					doc.getElementById('myMergeTip').addEventListener('tap', function() {
+						if(himall.isLogin()) {
+							himall.openVW('../marketing/merge-list.html');
+						} else {
+							showLogin({
+								id: '../marketing/merge-list.html',
+
+							}, '/');
+						}
+					});
+					doc.getElementById('refundList').addEventListener('tap',function(){
+						if(himall.isLogin()){
+							himall.openVW('order-refund-list.html','../order-refund-list.html');
+						}else{
+							showLogin({id:'order-refund-list.html'},'/');
+						}
+					});
+				document.addEventListener('updateData', function() {
+				if(himall.isLogin()) {
+					getUserData();
+				}
+				document.getElementById('scrollDiv').scrollTop = 0;
+			});
+
+				});
+			}(mui, document));
+
+			
+			var Cdata = null;
+
+			function getUserData() {
+				state = himall.getState();
+				rank.style.background = '#ffd81b';
+				userId = state.userId;
+				mui.ajax(URL + 'api/UserCenter/GetUser/'+userId, {
+					dataType: 'json',
+					type: 'get',
+					timeout: 10000,
+					success: function(data) {
+						if(data.Success == 'true') {
+							account.innerText =  data.UserName;
+							CellPhone = data.CellPhone;
+							userUrl = data.Urlstr;
+							Cdata = data;
+							qbalable = data.QBalance;
+							balable = data.Balance;
+							document.getElementById('rank').innerText = data.GradeName;
+							document.getElementById('today').innerText = data.TodayAmount;
+							document.getElementById('integral').innerText = data.Uspoints;
+							document.getElementById('performance').innerText = data.Yxggnum;
+							document.getElementById('balance').innerText = data.Balance;
+							document.getElementById('accumulative').innerText = data.TotalAmount;
+							//							document.getElementById('FavoriteProduct').innerText = data.FavoriteProduct;
+							//							document.getElementById('FavoriteShop').innerText = data.FavoriteShop;
+														himall.whichShow(data.WaitingForPay, 'WaitingForPay');
+														himall.whichShow(data.WaitingForComments, 'WaitingForComments');
+														himall.whichShow(data.WaitingForRecieve, 'WaitingForRecieve');
+														himall.whichShow(data.WaitingForDelivery, 'WaitingForDelivery');
+														himall.whichShow(data.RefundOrders, 'RefundOrders');
+							//							himall.whichShow(data.Counpon, 'Counpon');
+							//							document.getElementById('Integral').innerText = data.Integral + '分';
+							//							document.getElementById('myMerge').value = data.GroupTotal;
+							if(data.MyGroup > 0) {
+								document.getElementById('wodpt').innerText = data.MyGroup + '团火拼中';
+								document.getElementById('wodpt').style.color = '#ff176b';
+							}
+							//							var userPhoto = data.Photo;
+							//							if(userPhoto == '')
+							//								userPhoto = '../images/default-photo.png';
+							//							else
+							//								document.getElementById('userPhoto').src = userPhoto;
+						}
+					}
+				});
+
+			}
+
+			function showOrder() {
+				if(himall.isLogin()) {
+					 
+					himall.openVW('withdraw.html', '', {
+						orderStatus: balable
+					});
+				} else {
+					 
+					showLogin({
+						id: 'user/withdraw.html',
+						extras: {
+							orderStatus: balable
+						}
+					}, '/');
+				}
+			}
+
+			function showOrderList(id) {
+				if(himall.isLogin()) {
+					himall.openVW('order-list.html', '../order-list.html', {
+						orderStatus: id
+					});
+				} else {
+					showLogin({
+						id: 'order-list.html',
+						extras: {
+							orderStatus: id
+						}
+					}, '/');
+				}
+			};
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+		<link rel="stylesheet" href="css/swiper.min.css" />
+		<link rel="stylesheet" href="css/slide.css?t=1481097997053" />
+		<style>
+			*body{
+				/*消除 transition 闪屏*/
+			-webkit-transform-style: preserve-3d;     /*设置内嵌的元素在 3D 空间如何呈现：保留 3D*/
+			-webkit-backface-visibility: hidden;      /*(设置进行转换的元素的背面在面对用户时是否可见：隐藏)*/
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="swiper-container">
+	        <div class="swiper-wrapper">
+	            <div class="swiper-slide one">
+	            	<div class="box">
+	            		<img src="images/b1.png"/> 
+	            	</div>
+	            </div>
+	            <div class="swiper-slide two">
+	            	<div class="box">
+	            		<img src="images/b2.png"/>
+	            	</div>
+	            </div>
+	            <div class="swiper-slide three">
+	            	<div class="box">
+	            		<img src="images/b3.png"/>
+	            	</div>
+	            </div>
+	            <div class="swiper-slide four">
+	            	<div class="box">
+	            		<img src="images/b4.png"/>
+	            	</div>
+	            	<div class="animate" id="close">
+						立即体验
+					</div>
+	            </div>
+	        </div>
+        <div class="swiper-pagination"></div>
+   </div>
+      <script type="text/javascript" src="js/swiper.min.js" ></script>
+      <script type="text/javascript" src="js/mui.min.js" ></script>
+	  <script type="text/javascript" src="js/slide.js?t=1482727073882" ></script>
+	</body>
+</html>

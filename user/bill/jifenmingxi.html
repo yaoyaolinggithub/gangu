@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/style.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">积分券明细</h1>
+		</header>
+		<div class="mui-content" id="dug">		    
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../js/app.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function(){
+				mui.ajax(URL +'api/UserCenter/GetUsJfqList?pageNo=1&pageSize=10',{
+					dataType: 'json',
+					type: 'get',
+					timeout: 10000,
+					success: function(data) {
+						if(data.Success == true) {
+							html = "";
+							document.getElementById('dug').innerHTML = initData(html,data);
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						plus.nativeUI.toast('请求失败，请检查网络')
+					}
+				});
+			});
+			
+			function initData(html,data){
+				for (var i=0;i<data.Data.length;i++) {
+					if (parseInt(data.Data[i].Amount)>=0) {
+						html+='<div style="background: #fff;line-height: 50px;">'+
+					'<span id="" style="margin-left: 10px;">收入'+data.Data[i].Amount+'积分券</span>'+
+					'<span id="" style="float: right; margin-right: 10px;">'+data.Data[i].CreateTime+'</span></div>';
+					}else{
+						html+='<div style="background: #fff;line-height: 50px;">'+
+					'<span id="" style="margin-left: 10px;">支出'+data.Data[i].Amount+'积分券</span>'+
+					'<span id="" style="float: right; margin-right: 10px;">'+data.Data[i].CreateTime+'</span></div>';
+					}
+					
+				}
+				
+				return html;
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no,email=no" />
+		<title>关于我们</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<style type="text/css">
+			.transparent-bg {
+				background: #ff176b;
+			}
+			
+			.transparent-bg a {
+				color: #fff;
+			}
+			 
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-navs transparent-bg">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id="titles" class="mui-title"> </a>
+		</header>
+		<div class="mui-content">
+			<div class="scroll-div" id="text5">
+				<a href=""></a>
+			</div>
+		</div>
+	    <script src="../js/mui.min.js"></script>
+		<script src="../js/app.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			
+			mui.plusReady(function(){
+				var ws = plus.webview.currentWebview();
+				
+				if (parseInt(ws.wid) == 3) {
+					mui.ajax(URL+'api/Articles/GetNewsList?topnum=1&cid=0&ctype=13',{
+					dataType: 'json',
+					type:'get',
+					timeout: 1000,
+					success:function(data){
+						
+						document.getElementById('titles').innerText='关于我们'
+						document.getElementById('text5').innerHTML= data.Data[0].Content;
+					}
+				});
+				}
+				if (parseInt(ws.wid) == 2) {
+					mui.ajax(URL+'api/Articles/GetNewsList?topnum=1&cid=0&ctype=23',{
+					dataType: 'json',
+					type:'get',
+					timeout: 1000,
+					success:function(data){
+						document.getElementById('titles').innerText='常见问题'
+						document.getElementById('text5').innerHTML=data.Data[0].Content;
+					}
+				});
+				}
+				
+			});
+		</script>
+	</body>
+</html>

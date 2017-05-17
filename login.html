@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no,email=no" />
+		<title>登录</title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<link href="css/account.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-content {
+				background: #fff;
+				margin: 0;
+				padding: 0;
+			}
+			.up-box{
+				position: relative;
+				z-index: 1;
+			}
+			.up-box img{
+				width: 100%;
+				height: 500;
+			}
+			.up-box-a{
+				text-align: center;
+				overflow: hidden;
+				top: -50px;
+				position: relative;
+				z-index: 2;
+			}
+			.box-center{
+				background: #fff;
+				margin: 20px 0px;
+			}
+			.box-center .mui-input-row{
+				margin: 0px 20%;
+			}
+			.box-center .mui-input-row input{
+				border-style: none;
+				border-bottom: 1px solid #8d8d8d;
+				padding-left: 1px;
+			}
+			.button-box{
+				margin: 15px;
+				text-align: center;
+				text-shadow: 2px 2px 2px #bababa;
+			}
+			.button-box button{
+				 -webkit-box-shadow: -1px 1px 1px #ff176b;
+				border-style: none;
+				background:#ff176b;
+				width: 70%;
+				color: #fff;
+				border-radius: 50px;
+			}
+			.mui-wangji{
+				display: block;
+				margin: 20px;
+				color: #bababa;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style="background: #ff366a;">
+		  <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		</header>
+		<div class="mui-content">
+
+			<div id="">
+				
+				<div class="up-box">
+					<img class="bj-img" src="images/dl-bj.PNG" />
+				</div>
+				
+				<div class="up-box-a">
+					<span style="width: 50%;float: left;color: #fff;">登录</span>
+					<span style="height: 20px;width: 1px;float: left;background: #fff;"></span>
+					<span id='reg' style="width: 50%-1;color: #fff;">注册</span>
+				</div>
+				
+				<div class="box-center">
+					<div class="mui-input-row">
+						<input id='account' type="text" class="mui-input-clear mui-input" placeholder="手机号/昵称">
+					</div>
+					<div class="mui-input-row mui-password">
+						<input id='password' type="password" class="mui-input mui-input-clear" placeholder="密码">
+					</div>
+				</div>
+				<div class="button-box">
+					<button id='login' class="mui-btn">登录</button>
+					<a id='forgetPassword' class="mui-wangji">忘记密码</a>
+				</div>
+
+				
+			</div>
+
+		
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/app.js"></script>
+		<script>
+			(function($, doc) {
+				$.init({
+					swipeBack: true
+				});
+				$.plusReady(function() {
+					var settings = himall.getSettings(),
+						state = himall.getState(),
+						ws = plus.webview.currentWebview();
+						param = ws.param;
+						goback();
+					var toMain = function() {
+						$.fire(plus.webview.getWebviewById('user/usercenter.html'), 'updateData');
+						if(isEmptyObject(param)) {
+							setTimeout(function() {
+								ws.close();
+							}, 300)
+						} else {
+							himall.openVW(param.id, param.url, param.extras);
+							setTimeout(function() {
+								ws.close('none');
+							}, 1000)
+						}
+					};
+
+					//第三方登录
+					/*var auths = {};
+					var oauthArea = doc.querySelector('.oauth-area');
+					plus.oauth.getServices(function(services) {
+						for(var i in services) {
+							var service = services[i];
+							if(himall.ios()) {
+								if(service.id == 'qq' && !himall.isQQInstalled()) {
+									continue;
+								}
+								if(service.id == 'weixin' && !himall.isWXInstalled()) {
+									continue;
+								}
+							}
+							if(service.id == 'qq' || service.id == 'weixin' || service.id == 'weibo') {
+								auths[service.id] = service;
+								var btn = document.createElement('div');
+								btn.setAttribute('class', 'oauth-btn');
+								btn.authId = service.id;
+								btn.style.backgroundImage = 'url("images/' + service.id + '.png")'
+								oauthArea.appendChild(btn);
+							}
+						}
+						$(oauthArea).on('tap', '.oauth-btn', function() {
+							var auth = auths[this.authId],
+								w = plus.nativeUI.showWaiting('', {
+									padlock: true
+								});
+							auth.logout();
+							auth.login(function() {
+								auth.getUserInfo(function() {
+									var name = auth.userInfo.nickname || auth.userInfo.name,
+										headimgurl = auth.userInfo.headimgurl || auth.userInfo.figureurl_qq_2,
+										dataAuth = {
+											oauthType: auth.id,
+											oauthOpenId: auth.authResult.openid,
+											headimgurl: headimgurl,
+											oauthNickName: name,
+											sex: auth.userInfo.sex || null,
+											province: auth.userInfo.province || null,
+											city: auth.userInfo.city || null
+										};
+									$.ajax(URL + 'api/Login/GetUser', {
+										data: dataAuth,
+										dataType: 'json',
+										type: 'get',
+										timeout: 10000,
+										success: function(data) {
+											w.close();
+											if(data.Success == "true") {
+												plus.nativeUI.toast(auth.description + "登录成功");
+												return himall.createState(name, data.UserId, function() {
+													toMain();
+												});
+											} else {
+												himall.openVW('bind-login.html', '', {
+													dataAuth: JSON.stringify(dataAuth)
+												});
+											}
+										},
+										error: function(xhr, type, errorThrown) {
+											w.close();
+											plus.nativeUI.toast('请求失败，请检查网络')
+										}
+									});
+
+								}, function(e) {
+									w.close();
+									plus.nativeUI.toast("获取用户信息失败：" + e.message);
+								});
+							}, function(e) {
+								w.close();
+								plus.nativeUI.toast("登录认证失败：" + e.message);
+							});
+						});
+					}, function(e) {
+						oauthArea.style.display = 'none';
+						plus.nativeUI.toast("获取登录认证失败：" + e.message);
+					});*/
+
+					var loginButton = doc.getElementById('login');
+					var accountBox = doc.getElementById('account');
+					var passwordBox = doc.getElementById('password');
+					var regButton = doc.getElementById('reg');
+					var forgetButton = doc.getElementById('forgetPassword');
+					loginButton.addEventListener('tap', function() {
+						var loginInfo = {
+							account: accountBox.value,
+							password: passwordBox.value
+						};
+						himall.login(loginInfo, function(err) {
+							if(err) {
+								plus.nativeUI.toast(err);
+								return;
+							}
+							toMain();
+						});
+					});
+					regButton.addEventListener('tap', function() {
+						himall.openVW('reg.html');
+					}, false);
+					forgetButton.addEventListener('tap', function() {
+						himall.openVW('forget-password.html');
+					}, false);
+//					window.addEventListener('resize', function() {
+//						oauthArea.style.display = document.body.clientHeight > 400 ? 'block' : 'none';
+//					}, false);
+				});
+				function goback() {
+				if(!himall.isLogin()) {
+					var old_back = mui.back;
+					mui.back = function() {
+						var wobj = plus.webview.getWebviewById("user/usercenter.html");
+						wobj.reload(true);
+						old_back()
+					}
+				}
+			}
+			}(mui, document));
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,221 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<style type="text/css">
+			<style type="text/css">
+			
+			.bg-color{
+				color: #fff;
+			}
+			#box a{
+				width: 50%;
+				/*display: inline-block;*/
+				background: red;
+				float: left;
+				font-size: 14px;
+				
+			}
+			.selected{
+				background: pink !important;
+				border-bottom: 1px solid #007AFF;
+			}
+			.tab-content ul{
+				display: none;
+			}
+			.active{
+				display: block !important;
+			}
+			.history-list{ margin-top: 10px;}
+			.history-list li{ border-bottom: 0;}
+			.history-list li .p-img{ height: 80px; width: 80px;}
+			.history-list li h3{ margin-top: 15px;}
+		</style>
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav bg-color">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="box">
+				<a data-py="0" class="selected">商品收藏</a>
+				<a data-py="1">商铺收藏</a>
+			</h1>
+		</header>
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper transparent">
+
+				<div class="tab-content mui-scroll">
+				<ul class="mui-table-view mui-grid-view mui-clearfix active vshop-product" id="productsList" style="margin-top: 10px;">
+					
+				</ul>
+
+		    	<ul class="history-list mui-clearfix" id="shopList">
+					
+				</ul>
+			</div>
+
+		</div>
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/delayimg.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			var isnodata = false,
+				page = 1;
+			mui.init({
+				pullRefresh : {
+				    container:'#pullrefresh',
+				    deceleration:0.0006,
+				    up : {
+					    contentrefresh : "正在加载...",
+					    contentnomore:'已加载收藏商品',
+					    callback :function(){
+					      	var self=this;
+					      	if (!isnodata) {
+					      		page++;
+						        mui.ajax(URL+'api/UserCenter/GetUserCollectionProduct?pageNo='+page+'&pageSize=10',{
+									dataType:'json',
+									type:'get',
+									timeout:10000,
+									success:function(data){
+										if(data.Success){
+											var html='';
+						                    if(data.Data.length>0){
+												document.getElementById('productsList').insertAdjacentHTML('beforeend',initData(html,data));
+												delayimg.render();
+											}
+						                    if (data.Total<=page*10) {isnodata = true;}
+											self.endPullupToRefresh(isnodata);
+					      					
+										}
+									},
+									error:function(xhr,type,errorThrown){
+										plus.nativeUI.toast('请求失败，请检查网络')
+									}
+								});
+						    }else{
+						    	self.endPullupToRefresh(isnodata);
+						    }
+				    	}
+				    }
+				},
+				swipeBack: true
+			});
+			var tabs = document.getElementsByClassName('mui-title')[0].getElementsByTagName('a'),
+				contents = document.getElementsByClassName('tab-content')[0].getElementsByTagName('ul');
+				
+				mui('.mui-title').on('tap', 'a', function() {
+					var id = this.getAttribute('data-py');
+					for(var i = 0, len = tabs.length; i < len; i++) {
+					if(i == id) {
+						tabs[i].className = 'selected';
+						contents[i].className = 'mui-table-view mui-grid-view mui-clearfix active vshop-product';
+					} else {
+						tabs[i].className = '';
+						contents[i].className = '';
+					}
+				}
+				})
+				mui.plusReady(function () {
+				    
+				var ws=plus.webview.currentWebview();
+				ws.setStyle({scrollIndicator:'none'});
+				var w=plus.nativeUI.showWaiting('',{padlock:true});
+				//商品收藏
+				mui.ajax(URL+'api/UserCenter/GetUserCollectionProduct?pageNo=1&pageSize=10',{
+					dataType:'json',
+					type:'get',
+					timeout:10000,
+					success:function(data){
+						
+						if(data.Success){
+							var html='';
+							if (data.Total<=10) {isnodata = true;}
+							if(data.Data.length>0){
+								
+								document.getElementById('productsList').innerHTML=initData(html,data);
+			                    delayimg.init();
+							}else{
+								var html='<div class="empty-show"><h4>还没有收藏任何商品</h4><button id="closeWv" class="mui-btn mui-btn-negative">马上去收藏</button></div>';
+					        	document.getElementById('pullrefresh').innerHTML=html;
+							}
+							w.close();
+							document.getElementById('pullrefresh').className="mui-content mui-scroll-wrapper";
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						w.close();
+						reloadWvLoad();
+					}
+				});
+				//商铺收藏
+				mui.ajax(URL+'api/UserCenter/GetUserCollectionShop?pageNo=1&pageSize=10',{
+					dataType:'json',
+					type:'get',
+					timeout:10000,
+					success:function(data){
+						if(data.Success){
+							var html='';
+							if(data.Data.length>0){
+								document.getElementById('shopList').innerHTML=initdata(html,data);
+								delayimg.init();
+							}else{
+								var html='<div class="empty-show"><h4>还没有收藏任何店铺</h4><button id="closeWv" class="mui-btn mui-btn-negative">马上去收藏</button></div>';
+					        	document.getElementById('pullrefresh').innerHTML=html;
+							}
+							w.close();
+							document.getElementById('pullrefresh').className="mui-content mui-scroll-wrapper";
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						w.close();
+						reloadWvLoad();
+					}
+				});
+				
+				function initData(html,data){
+					for(var i=0; i<data.Data.length; i++){
+						html+='<li class="mui-table-view-cell mui-media mui-col-xs-6">'+
+                			'<div class="vshop-product-box">'+
+								'<a data-id="'+data.Data[i].Id+'">'+
+									'<div class="p-img"><b data-delay-background="'+data.Data[i].Image+'"></b></div>'+
+									'<div class="mui-media-body">'+data.Data[i].ProductName+'</div>'+
+									'<p class="vshop-product-price"><span>'+data.Data[i].Points+'积分</span><a>¥ ' + data.Data[i].SalePrice + '</a></p>'+
+								'</a>'+
+							'</div>'+
+	            		'</li>';
+					}
+					return html;
+				}
+				function initdata(html,data){
+					for(var i=0; i<data.Data.length; i++){
+						html+='<li>'+
+			                '<a class="p-img vshop-url" data-url="'+data.Data[i].Id+'"><b data-delay-background="'+data.Data[i].Logo+'"></b></a>'+
+			                '<h3><a class="vshop-url" data-url="'+data.Data[i].Id+'">'+data.Data[i].Name+'</a></h3>'+
+			            '</li>';
+					}
+					return html;
+				}
+				//添加列表项的点击事件
+				mui('.mui-content').on('tap', '.vshop-url', function() {
+					var vshopid = this.getAttribute('data-url');
+					himall.openVW('vshop-detail.html','../vshop/vshop-detail.html',{vshopId:vshopid});
+				});
+				//添加列表项的点击事件
+				mui('.mui-content').on('tap', '.vshop-product a', function() {
+					var id = this.getAttribute('data-id');
+					showProduct(id,'/');
+				});
+				
+			
+				})
+				
+		</script>
+	</body>
+
+</html>
